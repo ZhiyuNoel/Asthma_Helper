@@ -1,5 +1,9 @@
 # Asthma_Helper
 
+## Some Learning Materials:
+There is a tutorial of vue springboot full-stack development, but in Chinese, I recommend everyone to have a view, it's quite simple:
+[Tutorial](https://www.cnblogs.com/GoodHelper/p/8430422.html)
+
 ## IF YOU ARE TAKING RESPONSIBILITY FOR INTERFACE
 !! Please create your own branch firstly before doing any change.
 Before create your branch, you need to change your branch to interface first, and then create branches:
