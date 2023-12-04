@@ -23,5 +23,5 @@
 hs_err_pid*
 replay_pid*
 
-# ignore node files 
-/Interface/node_module
+# node modules 
+/interface/node_module
