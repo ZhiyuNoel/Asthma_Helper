@@ -6,13 +6,13 @@ There is a tutorial of vue springboot full-stack development, but in Chinese, I 
 
 ## Environment Setup:
 
-1. Nodejs Installation: [A Detail Steps](https://blog.csdn.net/ZHANGYANG_1109/article/details/121229581)
+1.**Nodejs Installation**: [A Detail Steps](https://blog.csdn.net/ZHANGYANG_1109/article/details/121229581)
 Latest Version(Current): [v21.4.0](https://nodejs.org/en)
 Recommended Version(Recommended for most users): [v20.10.0 LTS](https://nodejs.org/en/download)
 Project Version (Recommended use for this projecy): [v20.9.0](https://nodejs.org/en/blog/release/v20.9.0)
 ![Example page](images_MD/download_page.png)
 
-2. Check the nodejs version and npm version:
+2. **Check the nodejs version and npm version**:
 Since node.js default configuration npm, so do not have to download and configure npm separately, as long as node.js installation is successful, then you can directly use the npm command to download moudle.
 The following commends could be use to check the version of npm and nodejs:
 ```
@@ -21,60 +21,73 @@ npm - v
 ```
 ![version check result](images_MD/version_check.png)
 
-3. Install Vue-Cli (scaffold)
+3. **Install Vue-Cli (scaffold)**
 ```
 npm install -g @vue/cli
 ```
 
-4. Construct the project
-- Clone the project to local repo
-```
-git clone https://github.com/ZhiyuNoel/Asthma_Helper.git
-```
-After clone the code to local repo, the code cannot directly run as the lack of dependent packages and modules. Thus, download dependencies (node_module) after clone the project:
-- Dependency download:[Google Drive](https://drive.google.com/drive/folders/1TW9JJ3D9O6ctM_kChVQl8tpSerUVHDTB?usp=share_link)
+4. **Construct the project**
+    - Clone the project to local repo
+    ```
+    git clone https://github.com/ZhiyuNoel/Asthma_Helper.git
+    ```
+    After clone the code to local repo, the code cannot directly run as the lack of dependent packages and modules. Thus, download dependencies (node_module) after clone the project:
+    - Dependency download:[Google Drive](https://drive.google.com/drive/folders/1TW9JJ3D9O6ctM_kChVQl8tpSerUVHDTB?usp=share_link)
 
-However, if you want to install dependencies by yourself, the installations should satisfied following requirements:
-- install the axios for call of http requires:
+5. **Dependency installation (Optional)**: 
+    However, if you want to install dependencies by yourself, the installations should satisfied following requirements:
+    - install the axios for call of http requires:
+    ```
+    sudo npm install --save axios // For macOS or Linux
+    npm install --save axios // For windows
+    ```
+
+    - Install element plus library (Component lib):
+    ```
+    sudo npm install --save element-plus
+    npm install --save element-plus
+    ```
+
+    - Install font-awesome icon library:
+    ```
+    sudo npm install --save font-awesome
+    npm install --save font-awesome
+    ```　
+
+    - Install sass library:
+    ```
+    // For MacOS
+    sudo npm install --save-dev node-sass
+    sudo npm install --save-dev sass-loader
+
+    // For Windows
+    npm install --save-dev node-sass
+    npm install --save-dev sass-loader
+    ```
+
+    - Install mock.js
+    ```
+    sudo npm install --save-dev mockjs
+    sudo npm install --save-dev axios-mock-adapter
+
+    npm install --save-dev mockjs
+    npm install --save-dev axios-mock-adapter
+    ```
+
+6. Electron building (Optional):
+The electron is used to convert the vue project from a web-based to client-based
+The electron could be build as following steps:
 ```
-sudo npm install --save axios // For macOS or Linux
-npm install --save axios // For windows
+vue add electron-builder
 ```
 
-- Install element plus library (Component lib):
+Check the version of electron:
 ```
-sudo npm install --save element-plus
-npm install --save element-plus
-```
-
-- Install font-awesome icon library:
-```
-sudo npm install --save font-awesome
-npm install --save font-awesome
-```　
-
-- Install sass library:
-```
-// For MacOS
-sudo npm install --save-dev node-sass
-sudo npm install --save-dev sass-loader
-
-// For Windows
-npm install --save-dev node-sass
-npm install --save-dev sass-loader
+npm ls electron
 ```
 
-- Install mock.js
-```
-sudo npm install --save-dev mockjs
-sudo npm install --save-dev axios-mock-adapter
-
-npm install --save-dev mockjs
-npm install --save-dev axios-mock-adapter
-```
-
-
-
+The example version of project:
+![](images_MD/electron_version.png)
 
 
 ## Some recommendations:
