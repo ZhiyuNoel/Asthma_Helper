@@ -32,10 +32,15 @@ npm install -g @vue/cli
     git clone https://github.com/ZhiyuNoel/Asthma_Helper.git
     ```
     After clone the code to local repo, the code cannot directly run as the lack of dependent packages and modules. Thus, download dependencies (node_module) after clone the project:
+    ```
+    cd Asthma_Helper
+    ```
     - Dependency download:[Google Drive](https://drive.google.com/drive/folders/1TW9JJ3D9O6ctM_kChVQl8tpSerUVHDTB?usp=share_link)
 
 5. **Dependency installation (Optional)**: 
     However, if you want to install dependencies by yourself, the installations should satisfied following requirements:
+
+    After 
     - install the axios for call of http requires:
     ```
     sudo npm install --save axios // For macOS or Linux
@@ -83,7 +88,7 @@ vue add electron-builder
 ![The example_video](images_MD/example_video.mp4)
 Check the version of electron:
 ```
-npm ls electron
+sudo npm ls electron
 ```
 
 The example version of project:
@@ -103,7 +108,7 @@ yarn electron:serve
 
 If you have not installed the yarn, you could use the npm to directly start electron
 ```
-npm run electron:serve
+sudo npm run electron:serve
 ```
 
 ## Some recommendations:
