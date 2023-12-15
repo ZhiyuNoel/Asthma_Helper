@@ -52,7 +52,7 @@ npm install -g @vue/cli
     ```
     sudo npm install --save font-awesome
     npm install --save font-awesome
-    ```　
+    ```
 
     - Install sass library:
     ```
