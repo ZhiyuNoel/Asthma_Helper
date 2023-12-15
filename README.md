@@ -94,6 +94,7 @@ If you did not configure the electron, you could use npm to start the project as
 ```
 npm run serve
 ```
+![Running result](images_MD/npm_run.png)
 
 If you have installed the yarn, you could use 
 ```
