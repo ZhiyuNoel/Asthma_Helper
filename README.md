@@ -80,7 +80,7 @@ The electron could be build as following steps:
 ```
 vue add electron-builder
 ```
-
+![The example_video](images_MD/example_video.mp4)
 Check the version of electron:
 ```
 npm ls electron
