@@ -74,7 +74,7 @@ npm install -g @vue/cli
     npm install --save-dev axios-mock-adapter
     ```
 
-6. Electron building (Optional):
+6. **Electron building (Optional)**:
 The electron is used to convert the vue project from a web-based to client-based
 The electron could be build as following steps:
 ```
@@ -89,6 +89,21 @@ npm ls electron
 The example version of project:
 ![](images_MD/electron_version.png)
 
+## Run the project:
+If you did not configure the electron, you could use npm to start the project as web-based project:
+```
+npm run serve
+```
+
+If you have installed the yarn, you could use 
+```
+yarn electron:serve
+```
+
+If you have not installed the yarn, you could use the npm to directly start electron
+```
+npm run electron:serve
+```
 
 ## Some recommendations:
 1. Please do not do some operations (e.g. add branch, change code), one the webpage directly.
