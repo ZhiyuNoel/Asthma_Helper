@@ -1,5 +1,12 @@
 # Asthma_Helper
 
+## Work Allocation
+- [ ] Zhiyu Dong: Interface Construction between front-end and back-end
+- [ ] Hongbo Wang: Interface Construction between front-end and back-end
+- [ ] Chengkai Yao: API data processing and partical user interface construction
+- [ ] Qian Tong Lim: API data processing
+- [ ] Xing Lim: User Interface Construction
+
 ## Some Learning Materials:
 There is a tutorial of vue springboot full-stack development, but in Chinese, I recommend everyone to have a view, it's quite simple:
 [Tutorial](https://www.cnblogs.com/GoodHelper/p/8430422.html)
