@@ -14,9 +14,13 @@ There is a tutorial of vue springboot full-stack development, but in Chinese, I 
 ## Environment Setup:
 
 1.**Nodejs Installation**: [A Detail Steps](https://blog.csdn.net/ZHANGYANG_1109/article/details/121229581)
+
 Latest Version(Current): [v21.4.0](https://nodejs.org/en)
+
 Recommended Version(Recommended for most users): [v20.10.0 LTS](https://nodejs.org/en/download)
+
 Project Version (Recommended use for this projecy): [v20.9.0](https://nodejs.org/en/blog/release/v20.9.0)
+
 ![Example page](images_MD/download_page.png)
 
 2. **Check the nodejs version and npm version**:
