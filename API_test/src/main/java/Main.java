@@ -20,15 +20,7 @@ public class Main {
          */
 
         try {
-            //Public API:
-            //https://www.metaweather.com/api/location/search/?query=<CITY>
-            //https://www.metaweather.com/api/location/44418/
-            // https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/GroupName={GROUPNAME}/Date={DATE}
-
-//            DateTime date = null;
-//            String urlSafeDateString = HttpServerUtility.UrlTokenEncode(date.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture).ToCharArray());
-//            date = DateTime.Parse(new String(HttpServerUtility.UrlTokenDecode(urlSafeDateString)), System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
-
+            //LondonAIR API:
 //            https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/GroupName=London/Date=2023-11-27/Json
 //            Greenwich - Westhorne Avenue - seems like a good option
             URL url = new URL("https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/LocalAuthorityId=11/Date=2023-11-27/Json");
