@@ -15,3 +15,5 @@
 **siteAPDetails** is a class to return the Air pollution details of different air pollutant monitor and air quality band or level given the chosen site
 
 **urlReader** is a class that helps to handle reading the json object that is fetched from a given link from the API
+
+TBC- latestAP is a class to return the latest hourly Air pollution details for a given site 
