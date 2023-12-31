@@ -1,4 +1,4 @@
-# Asthma_Helper
+# API Testing functions
 
 **getNameSite** is just a class that was used to run for one time to get the json file of following:
 - LA_name_code.json
