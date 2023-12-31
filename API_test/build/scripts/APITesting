@@ -209,7 +209,7 @@ DEFAULT_JVM_OPTS=""
 
 set -- \
         -classpath "$CLASSPATH" \
-        Main \
+        getNameSite \
         "$@"
 
 # Stop when "xargs" is not available.

@@ -72,7 +72,7 @@ set CLASSPATH=%APP_HOME%\lib\APITesting-1.0-SNAPSHOT.jar;%APP_HOME%\lib\json-sim
 
 
 @rem Execute APITesting
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %API_TESTING_OPTS%  -classpath "%CLASSPATH%" Main %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %API_TESTING_OPTS%  -classpath "%CLASSPATH%" getNameSite %*
 
 :end
 @rem End local scope for the variables with windows NT shell
