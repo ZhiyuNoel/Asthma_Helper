@@ -1,0 +1,199 @@
+{
+  "DailyAirQualityIndex": {
+    "@MonitoringIndexDate": "2024-01-03 00:00:00",
+    "@GroupName": "Essex",
+    "@TimeToLive": "48",
+    "LocalAuthority": [
+      {
+        "@LocalAuthorityCode": "226",
+        "@LocalAuthorityName": "Basildon",
+        "@LaCentreLatitude": "51.572181",
+        "@LaCentreLongitude": "0.462461",
+        "@LaCentreLatitudeWGS84": "6723136.890301",
+        "@LaCentreLongitudeWGS84": "51480.923032"
+      },
+      {
+        "@LocalAuthorityCode": "227",
+        "@LocalAuthorityName": "Braintree",
+        "@LaCentreLatitude": "51.877476",
+        "@LaCentreLongitude": "0.548444",
+        "@LaCentreLatitudeWGS84": "6778001.790348",
+        "@LaCentreLongitudeWGS84": "61052.506809"
+      },
+      {
+        "@LocalAuthorityCode": "42",
+        "@LocalAuthorityName": "Brentwood",
+        "@LaCentreLatitude": "51.621407",
+        "@LaCentreLongitude": "0.305749",
+        "@LaCentreLatitudeWGS84": "6731958.345203",
+        "@LaCentreLongitudeWGS84": "34035.822991"
+      },
+      {
+        "@LocalAuthorityCode": "43",
+        "@LocalAuthorityName": "Castle Point",
+        "@LaCentreLatitude": "51.534684",
+        "@LaCentreLongitude": "0.590429",
+        "@LaCentreLatitudeWGS84": "6716423.717043",
+        "@LaCentreLongitudeWGS84": "65726.25563"
+      },
+      {
+        "@LocalAuthorityCode": "228",
+        "@LocalAuthorityName": "Chelmsford",
+        "@LaCentreLatitude": "51.735814",
+        "@LaCentreLongitude": "0.469708",
+        "@LaCentreLatitudeWGS84": "6752497.474066",
+        "@LaCentreLongitudeWGS84": "52287.655382"
+      },
+      {
+        "@LocalAuthorityCode": "229",
+        "@LocalAuthorityName": "Colchester",
+        "@LaCentreLatitude": "51.889804",
+        "@LaCentreLongitude": "0.901235",
+        "@LaCentreLatitudeWGS84": "6780225.076281",
+        "@LaCentreLongitudeWGS84": "100325.021285"
+      },
+      {
+        "@LocalAuthorityCode": "230",
+        "@LocalAuthorityName": "Epping Forest",
+        "@LaCentreLatitude": "51.697973",
+        "@LaCentreLongitude": "0.110219",
+        "@LaCentreLatitudeWGS84": "6745698.253044",
+        "@LaCentreLongitudeWGS84": "12269.522956"
+      },
+      {
+        "@LocalAuthorityCode": "231",
+        "@LocalAuthorityName": "Harlow",
+        "@LaCentreLatitude": "51.776463",
+        "@LaCentreLongitude": "0.111317",
+        "@LaCentreLatitudeWGS84": "6759807.57855",
+        "@LaCentreLongitudeWGS84": "12391.751757"
+      },
+      {
+        "@LocalAuthorityCode": "232",
+        "@LocalAuthorityName": "Maldon",
+        "@LaCentreLatitude": "51.731136",
+        "@LaCentreLongitude": "0.674616",
+        "@LaCentreLatitudeWGS84": "6751656.628907",
+        "@LaCentreLongitudeWGS84": "75097.909601"
+      },
+      {
+        "@LocalAuthorityCode": "233",
+        "@LocalAuthorityName": "Rochford",
+        "@LaCentreLatitude": "51.583814",
+        "@LaCentreLongitude": "0.707085",
+        "@LaCentreLatitudeWGS84": "6725220.698146",
+        "@LaCentreLongitudeWGS84": "78712.342148"
+      },
+      {
+        "@LocalAuthorityCode": "234",
+        "@LocalAuthorityName": "Southend On Sea",
+        "@LaCentreLatitude": "51.540905",
+        "@LaCentreLongitude": "0.71149",
+        "@LaCentreLatitudeWGS84": "6717537.094033",
+        "@LaCentreLongitudeWGS84": "79202.704505"
+      },
+      {
+        "@LocalAuthorityCode": "235",
+        "@LocalAuthorityName": "Tendring",
+        "@LaCentreLatitude": "51.875365",
+        "@LaCentreLongitude": "1.111765",
+        "@LaCentreLatitudeWGS84": "6777621.144424",
+        "@LaCentreLongitudeWGS84": "123761.113682"
+      },
+      {
+        "@LocalAuthorityCode": "34",
+        "@LocalAuthorityName": "Thurrock",
+        "@LaCentreLatitude": "51.493456",
+        "@LaCentreLongitude": "0.35292",
+        "@LaCentreLatitudeWGS84": "6709048.95418",
+        "@LaCentreLongitudeWGS84": "39286.874691",
+        "Site": [
+          {
+            "@BulletinDate": "2024-01-03 00:00:00",
+            "@SiteCode": "TK3",
+            "@SiteName": "Thurrock - Stanford-le-Hope",
+            "@SiteType": "Roadside",
+            "@Latitude": "51.518162",
+            "@Longitude": "0.439548",
+            "@LatitudeWGS84": "6713467.50095",
+            "@LongitudeWGS84": "48930.2595392",
+            "Species": [
+              {
+                "@SpeciesCode": "NO2",
+                "@SpeciesDescription": "Nitrogen Dioxide",
+                "@AirQualityIndex": "1",
+                "@AirQualityBand": "Low",
+                "@IndexSource": "Measurement"
+              },
+              {
+                "@SpeciesCode": "PM10",
+                "@SpeciesDescription": "PM10 Particulate",
+                "@AirQualityIndex": "1",
+                "@AirQualityBand": "Low",
+                "@IndexSource": "Measurement"
+              },
+              {
+                "@SpeciesCode": "PM25",
+                "@SpeciesDescription": "PM2.5 Particulate",
+                "@AirQualityIndex": "1",
+                "@AirQualityBand": "Low",
+                "@IndexSource": "Measurement"
+              }
+            ]
+          },
+          {
+            "@BulletinDate": "2024-01-03 00:00:00",
+            "@SiteCode": "TK8",
+            "@SiteName": "Thurrock - London Road (Purfleet)",
+            "@SiteType": "Roadside",
+            "@Latitude": "51.478697",
+            "@Longitude": "0.255133",
+            "@LatitudeWGS84": "6706410.522",
+            "@LongitudeWGS84": "28401.2756446",
+            "Species": {
+              "@SpeciesCode": "NO2",
+              "@SpeciesDescription": "Nitrogen Dioxide",
+              "@AirQualityIndex": "1",
+              "@AirQualityBand": "Low",
+              "@IndexSource": "Measurement"
+            }
+          },
+          {
+            "@BulletinDate": "2024-01-03 00:00:00",
+            "@SiteCode": "TK9",
+            "@SiteName": "Thurrock - Dock Road Tilbury",
+            "@SiteType": "Roadside",
+            "@Latitude": "51.4638074287966",
+            "@Longitude": "0.352141545594137",
+            "@LatitudeWGS84": "6703749.61290885",
+            "@LongitudeWGS84": "39200.2175426956",
+            "Species": [
+              {
+                "@SpeciesCode": "NO2",
+                "@SpeciesDescription": "Nitrogen Dioxide",
+                "@AirQualityIndex": "1",
+                "@AirQualityBand": "Low",
+                "@IndexSource": "Measurement"
+              },
+              {
+                "@SpeciesCode": "PM25",
+                "@SpeciesDescription": "PM2.5 Particulate",
+                "@AirQualityIndex": "1",
+                "@AirQualityBand": "Low",
+                "@IndexSource": "Measurement"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@LocalAuthorityCode": "236",
+        "@LocalAuthorityName": "Uttlesford",
+        "@LaCentreLatitude": "51.978943",
+        "@LaCentreLongitude": "0.239124",
+        "@LaCentreLatitudeWGS84": "6796318.973856",
+        "@LaCentreLongitudeWGS84": "26619.161916"
+      }
+    ]
+  }
+}
