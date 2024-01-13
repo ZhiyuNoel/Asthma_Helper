@@ -19,6 +19,7 @@
     "font-awesome": "^4.7.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vue3-google-map": "^0.18.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
