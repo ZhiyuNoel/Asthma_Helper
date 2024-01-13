@@ -21,7 +21,7 @@
                     <el-menu-item index="1-1">Dashboard</el-menu-item>
                     <el-menu-item index="1-2">Inhaler Logging</el-menu-item>
                     <el-menu-item index="1-3">Map</el-menu-item>
-                    <el-menu-item index="1-4">History</el-menu-item>
+                    <el-menu-item index="1-4" @click="goToHistory">History</el-menu-item>
                     <el-menu-item index="1-5">Traveling</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
@@ -46,6 +46,7 @@
           </el-header>
           <!--中间-->
           <el-main class="main">
+            <h1>This is main page</h1>
             <transition name="fade" mode="out-in">
               <router-view></router-view>
             </transition>
@@ -67,7 +68,9 @@
     export default {
       data: data,
       methods: {
-    
+        goToHistory() {
+        this.$router.push({ name: 'history' });
+        }
       },
       mounted: function() {
     
