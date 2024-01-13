@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "axios": "^1.6.2",
+    "element-plus": "^2.4.4",
+    "font-awesome": "^4.7.0"
+  },
+  "devDependencies": {
+    "axios-mock-adapter": "^1.22.0",
+    "mockjs": "^1.1.0",
+    "node-sass": "^9.0.0",
+    "sass-loader": "^13.3.2"
+  }
+}
