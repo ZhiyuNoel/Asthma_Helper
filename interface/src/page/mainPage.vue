@@ -15,25 +15,13 @@
       <el-container class="layout-content">
         <!-- Sidebar -->
         <el-aside class="sidebar">
-          <el-menu class="main-menu">
-            <el-menu-item index="1-1">
-              <router-link to="/dashboard">Dashboard</router-link>
-            </el-menu-item>
-            <el-menu-item index="1-2">
-              <router-link to="/inhaler-logging">Inhaler Logging</router-link>
-            </el-menu-item>
-            <el-menu-item index="1-3">
-              <router-link to="/map">Map</router-link>
-            </el-menu-item>
-            <el-menu-item index="1-4">
-              <router-link to="/history">History</router-link>
-            </el-menu-item>
-            <el-menu-item index="1-5">
-              <router-link to="/travelling">Travelling</router-link>
-            </el-menu-item>
-            <el-menu-item index="1-6">
-              <router-link to="/settings">Settings</router-link>
-            </el-menu-item>
+          <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true">
+            <el-menu-item index="1" @click="toInhaler">InhalerLogging</el-menu-item>
+            <el-menu-item index="2" @click="toMap">Map</el-menu-item>
+            <el-menu-item index="3" @click="toHistory">History</el-menu-item>
+            <el-menu-item index="4" @click="toAdvice">Advice</el-menu-item>
+            <el-menu-item index="5" @click="toSetting">Settings</el-menu-item>
+            <!-- ...其他菜单项... -->
           </el-menu>
         </el-aside>
 
@@ -63,6 +51,21 @@ export default {
     updateDateTime() {
       this.currentDate = new Date().toLocaleDateString();
       this.currentTime = new Date().toLocaleTimeString();
+    },
+    toInhaler(){
+      this.$router.push({ name: "InhalerLogging"})
+    },
+    toAdvice(){
+      this.$router.push({ name:"Travelling"})
+    },
+    toHistory(){
+      this.$router.push({ name:"History"})
+    },
+    toSetting(){
+      this.$router.push({ name:"Settings"})
+    },
+    toMap(){
+      this.$router.push({ name:"Map"})
     }
   },
   mounted() {
@@ -70,7 +73,7 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.interval);
-  }
+  },
 }
 </script>
 

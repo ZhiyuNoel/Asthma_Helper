@@ -69,7 +69,7 @@
         // 监听 selectedNumber 变化
         watch(() => props.selectedNumber, () => {
           fetchAndInitMonthlyChart();
-        }, { immediate: true});
+        }, { immediate: true });
 
         const circles = computed(() => {
         return sitesData.value.map(site => {
@@ -102,4 +102,4 @@
     margin: 0;
     padding: 0;
   }
-  </style>
+ </style>
