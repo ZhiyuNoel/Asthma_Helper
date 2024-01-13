@@ -1,144 +1,145 @@
 <template>
-    <section>
-      <el-container class="container">
-        <!--左边-->
-        <el-aside :width="collapsed? '65px' : '200px' ">
-          <el-container>
-            <el-header>
-              <span class="menu-button" v-if="collapsed" @click.prevent="collapsed=!collapsed">
-                <i class="fa fa-align-justify"></i>
-              </span>
-              <span v-else class="system-name">{{systemName}}</span>
-            </el-header>
-            <el-main>
-              <el-menu :collapse="collapsed">
-                <el-submenu index="1">
-                  <template slot="title">
-                    <i class="el-icon-menu"></i>
-                    <span>菜单一</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="1-1">Dashboard</el-menu-item>
-                    <el-menu-item index="1-2">Inhaler Logging</el-menu-item>
-                    <el-menu-item index="1-3">Map</el-menu-item>
-                    <el-menu-item index="1-4">History</el-menu-item>
-                    <el-menu-item index="1-5">Traveling</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
-              </el-menu>
-            </el-main>
-          </el-container>
+  <section>
+    <el-container class="container">
+      <!-- Header -->
+      <el-header class="header">
+        <img src="../assets/logo_asthma.png" alt="Logo" class="logo" />
+        <span class="system-name">{{ systemName }}</span>
+        <div class="header-info">
+          <span class="date-time">{{ currentDate }} {{ currentTime }}</span>
+          <span class="user-info">Hello, {{ userName }}</span>
+        </div>
+      </el-header>
+
+      <!-- Layout for sidebar and main content -->
+      <el-container class="layout-content">
+        <!-- Sidebar -->
+        <el-aside class="sidebar">
+          <el-menu class="main-menu">
+            <el-menu-item index="1-1">
+              <router-link to="/dashboard">Dashboard</router-link>
+            </el-menu-item>
+            <el-menu-item index="1-2">
+              <router-link to="/inhaler-logging">Inhaler Logging</router-link>
+            </el-menu-item>
+            <el-menu-item index="1-3">
+              <router-link to="/map">Map</router-link>
+            </el-menu-item>
+            <el-menu-item index="1-4">
+              <router-link to="/history">History</router-link>
+            </el-menu-item>
+            <el-menu-item index="1-5">
+              <router-link to="/travelling">Travelling</router-link>
+            </el-menu-item>
+            <el-menu-item index="1-6">
+              <router-link to="/settings">Settings</router-link>
+            </el-menu-item>
+          </el-menu>
         </el-aside>
-        <!--内容-->
-        <el-container>
-          <!--页眉-->
-          <el-header class="header">
-            <el-row>
-              <el-col :span="18" class="header-title">
-                <img src="../assets/logo_asthma.png" alt="Your Image Description" style="height: 20px; width: 20px;"/> <!-- 添加图片 -->
-                <span v-if="collapsed" class="system-name">{{systemName}}</span>
-                <span v-else class="menu-button" @click.prevent="collapsed=!collapsed">
-                  <i class="fa fa-align-justify"></i>
-                </span>
-              </el-col>
-              <el-col :span="6"><span class="el-dropdown-link userinfo-inner">Hello: {{userName}}</span></el-col>
-            </el-row>
-          </el-header>
-          <!--中间-->
-          <el-main class="main">
-            <transition name="fade" mode="out-in">
-              <router-view></router-view>
-            </transition>
-          </el-main>
-        </el-container>
+
+        <!-- Main Content -->
+        <el-main class="main">
+          <transition name="fade" mode="out-in">
+            <router-view></router-view>
+          </transition>
+        </el-main>
       </el-container>
-    </section>
-    </template>
-    
-    <script>
-    let data = () => {
-      return {
-        collapsed: false,
-        systemName: 'Asthma Helper',
-        userName: 'User'
+    </el-container>
+  </section>
+</template>
+
+
+<script>
+export default {
+  data() {
+    return {
+      systemName: 'Asthma Helper',
+      userName: 'User',
+      currentDate: new Date().toLocaleDateString(),
+      currentTime: new Date().toLocaleTimeString(),
+    };
+  },
+  methods: {
+    updateDateTime() {
+      this.currentDate = new Date().toLocaleDateString();
+      this.currentTime = new Date().toLocaleTimeString();
+    }
+  },
+  mounted() {
+    this.interval = setInterval(this.updateDateTime, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.interval);
+  }
+}
+</script>
+
+<style scoped lang="scss">
+$width: 100%;
+$height: 100%;
+$background-color: #5251b1;
+$header-color: #fff;
+$header-height: 60px;
+
+.container {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+
+  .layout-content {
+    display: flex; 
+    height: calc(100% - #{$header-height}); 
+  }
+
+  .sidebar {
+    width: 200px; // fixed width for sidebar
+  }
+
+  .header {
+    background-color: $background-color;
+    color: $header-color;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      height: 40px; // larger logo height
+      width: auto; // to maintain aspect ratio
+    }
+
+    .system-name {
+      font-size: large;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .date-time {
+        margin-right: 10px;
+      }
+      .user-info {
+        margin-left: 10px; 
       }
     }
-    
-    export default {
-      data: data,
-      methods: {
-    
-      },
-      mounted: function() {
-    
-      }
-    }
-    </script>
-    
-    <style scoped="scoped"
-      lang="scss">
-    $width: 100%;
-    $height: 100%;
-    $background-color: #5251b1;
-    $header-color: #fff;
-    $header-height: 60px;
-    
-    .container {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        .el-aside {
-            .el-header {
-                line-height: $header-height;
-                background-color: $background-color;
-                color: $header-color;
-                text-align: center;
-            }
-            .el-container {
-                height: $height;
-                .el-main {
-                    padding: 0;
-                }
-            }
-        }
-    
-        .main {
-            width: $width;
-            height: $height;
-        }
-    
-        .menu-button {
-            width: 14px;
-            cursor: pointer;
-        }
-    
-        .userinfo-inner {
-            cursor: pointer;
-        }
-    
-        .el-menu {
-            height: $height;
-        }
-    
-        .header {
-            background-color: $background-color;
-            color: $header-color;
-            text-align: center;
-            line-height: $header-height;
-            padding: 0;
-    
-            .header-title {
-                text-align: left;
-                span {
-                    padding: 0 20px;
-                }
-            }
-        }
-    
-        .system-name {
-            font-size: large;
-            font-weight: bold;
-        }
-    }
-    </style>
+  }
+
+  .main {
+    width: calc(100% - 200px); // main content width
+    overflow-y: auto; // for scrolling
+  }
+}
+
+</style>
