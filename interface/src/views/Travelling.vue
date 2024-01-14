@@ -28,8 +28,8 @@
                 {{ name }}
               </option>
             </select></div>
-          Species Chosen for Top 10: {{ this.selectedTopSpecies }} 
-          Month Chosen for Top 10: {{ this.selectedTopMonth }} <br />
+          <!-- Species Chosen for Top 10: {{ this.selectedTopSpecies }} 
+          Month Chosen for Top 10: {{ this.selectedTopMonth }} <br /> -->
           <div>
               <div v-for="item  in this.top10details">
               {{ item }}
@@ -61,20 +61,10 @@
           </div>
 
             <!-- <p v-html="this.top10details"></p> -->
-            First Site Chosen: {{ this.selectedSite1 }} <br />
+            <!-- First Site Chosen: {{ this.selectedSite1 }} <br />
             Second Site Chosen: {{ this.selectedSite2 }} <br />
-            Species Chosen: {{ this.selectedSpeciesCompare }} <br />
-            <!-- Index NO2: {{ NO2Index }} <br />
-            Index SO2: {{ SO2Index }} <br />
-            Index O3: {{ O3Index }} <br />
-            Index PM25: {{ PM25Index }} <br />
-            Index PM10: {{ PM10Index }} <br /> -->
-            <!-- Percentage: {{ this.percentages[1] }} <br />
-            Notice about air pollution across all sites: {{ this.message }} <br />
-            Top 10 sites: {{ this.returnList }} <br />
-            Top 10 sites and values: {{ this.keyValues }} <br /> -->
-
-            {{ this.comparisonResult }}
+            Species Chosen: {{ this.selectedSpeciesCompare }} <br /> -->
+       
             <p v-html="this.comparisonResult"></p>
           </div>
           <transition name="fade" mode="out-in">
