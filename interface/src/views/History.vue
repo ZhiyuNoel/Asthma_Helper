@@ -48,9 +48,6 @@
             <el-table-column prop="factors" label="Pollutant" width="120" />
             <el-table-column prop="level" label="Level"  />
           </el-table>
-
-          <!--          <div class="radius" :style='small'/>-->
-
         </el-aside>
       </el-container>
     </el-container>
@@ -95,8 +92,6 @@ $header-height: 60px;
       width:100%;
     }
 }
-
-
 </style>
 
 
@@ -123,6 +118,7 @@ export default {
   data: data,
   name: "History",
   mounted() {
+    //initialize all three charts with null labels and datasets
     this.initWeeklyChart();
     this.initMonthlyChart();
     this.init3MonthlyChart();
@@ -130,17 +126,15 @@ export default {
 
   methods: {
 
-    goToHistory() {
-      this.$router.push({ name: 'history' });
-    },
-
     initWeeklyChart() {
+      //initialize chart with null datas
+      //same for three charts
       const ctx = document.getElementById('weeklyChart').getContext('2d');
       this.weeklyChart = new Chart(ctx, {type: 'line',
         data: {labels: null,datasets: null},
         options: {
-            plugins: {title: {display: true,text: `Weekly Chart ${this.selectedSite}`}},
-            scales: {y: {beginAtZero: true}}
+          plugins: {title: {display: true,text: `Weekly Chart ${this.selectedSite}`}},
+          scales: {y: {beginAtZero: true}}
         }
       });
     },
@@ -170,8 +164,14 @@ export default {
     }, 
 
     updateWeeklyChart() {
+      
+      //update chart with fetched data
+      //same for three charts except different past date
+
       this.currentDate = this.getCurrentDate();
       var pastDate = this.getPastDate(7);
+
+      //insert selectedSite, currentDate, and pastDate to API urls. Fetch all five pollutants
       var SO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=SO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
       var O3_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=O3/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
       var NO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=NO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
@@ -188,6 +188,8 @@ export default {
 
         var datasets = [];
         var labels = [];
+
+        //check x-axis (date) for all pollutants, select the longest x-axis
         responses.forEach(response => {
           if (response && !response.error && response.data && response.data.RawAQData && response.data.RawAQData.Data) {
             const currentLabels = response.data.RawAQData.Data.map(item => item["@MeasurementDateGMT"].split(" ")[0]);
@@ -197,6 +199,7 @@ export default {
           }
         });
 
+        //check whether each pollutant is available or null. If not null, push to datasets.
         if (responses[0] && !responses[0].error) {
           datasets.push({
             label: 'SO2',
@@ -243,103 +246,20 @@ export default {
           });
         }
         
-
+        //update chart's dataset and labels. update figure. 
         this.weeklyChart.data.datasets =datasets;
         this.weeklyChart.data.labels = labels;
         this.weeklyChart.update();
-        
+  
     }).catch(error => {
         console.error("Error in Promise.all: ", error);
       });
      
     },
   
-      updateMonthlyChart() {
-        this.currentDate = this.getCurrentDate();
-        var pastDate = this.getPastDate(30);
-        var SO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=SO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var O3_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=O3/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var NO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=NO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var PM10_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM10/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var PM25_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM25/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-
-        Promise.all([
-          axios.get(SO2_link).catch(err => ({ error: true, data: null })),
-          axios.get(NO2_link).catch(err => ({ error: true, data: null })),
-          axios.get(O3_link).catch(err => ({ error: true, data: null })),
-          axios.get(PM10_link).catch(err => ({ error: true, data: null })),
-          axios.get(PM25_link).catch(err => ({ error: true, data: null }))
-        ]).then(responses => {
-          var datasets = [];
-          var labels = [];
-          responses.forEach(response => {
-            if (response && !response.error && response.data && response.data.RawAQData && response.data.RawAQData.Data) {
-              const currentLabels = response.data.RawAQData.Data.map(item => item["@MeasurementDateGMT"].split(" ")[0]);
-              if (currentLabels.length > labels.length) {
-                labels = currentLabels;
-              }
-            }
-          });
-
-          if (responses[0] && !responses[0].error) {
-            datasets.push({
-              label: 'SO2',
-              data: responses[0].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[1] && !responses[1].error) {
-            datasets.push({
-              label: 'NO2',
-              data: responses[1].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(200, 200, 0, 0.2)',
-              borderColor: 'rgba(200, 200, 0, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[2] && !responses[2].error) {
-            datasets.push({
-              label: 'O3',
-              data: responses[2].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(0, 0, 200, 0.2)',
-              borderColor: 'rgba(0, 0, 200, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[3] && !responses[3].error) {
-            datasets.push({
-              label: 'PM10',
-              data: responses[3].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(0, 200, 0, 0.2)',
-              borderColor: 'rgba(0, 200, 0, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[4] && !responses[4].error) {
-            datasets.push({
-              label: 'PM25',
-              data: responses[4].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(128, 0, 132, 0.2)',
-              borderColor: 'rgba(128, 0, 132, 1)',
-              borderWidth: 1
-            });
-          }
-
-        this.monthlyChart.data.datasets =datasets;
-        this.monthlyChart.data.labels = labels;
-        this.monthlyChart.update();
-
-        }).catch(error => {
-          console.error("Error in Promise.all: ", error);
-        });
-       
-      },
-
-    update3MonthlyChart() {
+    updateMonthlyChart() {
       this.currentDate = this.getCurrentDate();
-      var pastDate = this.getPastDate(90);
+      var pastDate = this.getPastDate(30);
       var SO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=SO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
       var O3_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=O3/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
       var NO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=NO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
@@ -409,27 +329,103 @@ export default {
             borderWidth: 1
           });
         }
-        
 
-        this.tmonthlyChart.data.datasets =datasets;
-        this.tmonthlyChart.data.labels = labels;
-        this.tmonthlyChart.update();
+      this.monthlyChart.data.datasets =datasets;
+      this.monthlyChart.data.labels = labels;
+      this.monthlyChart.update();
 
-        }).catch(error => {console.error("Error in Promise.all: ", error);});
-        
-      },  
-
-
-
-  normalizeData(data) {
-      const maxVal = Math.max(...data);
-      return data.map(val => val / maxVal);
+      }).catch(error => {
+        console.error("Error in Promise.all: ", error);
+      });
+      
     },
+
+  update3MonthlyChart() {
+    this.currentDate = this.getCurrentDate();
+    var pastDate = this.getPastDate(90);
+    var SO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=SO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
+    var O3_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=O3/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
+    var NO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=NO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
+    var PM10_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM10/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
+    var PM25_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM25/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
+
+    Promise.all([
+      axios.get(SO2_link).catch(err => ({ error: true, data: null })),
+      axios.get(NO2_link).catch(err => ({ error: true, data: null })),
+      axios.get(O3_link).catch(err => ({ error: true, data: null })),
+      axios.get(PM10_link).catch(err => ({ error: true, data: null })),
+      axios.get(PM25_link).catch(err => ({ error: true, data: null }))
+    ]).then(responses => {
+      var datasets = [];
+      var labels = [];
+      responses.forEach(response => {
+        if (response && !response.error && response.data && response.data.RawAQData && response.data.RawAQData.Data) {
+          const currentLabels = response.data.RawAQData.Data.map(item => item["@MeasurementDateGMT"].split(" ")[0]);
+          if (currentLabels.length > labels.length) {
+            labels = currentLabels;
+          }
+        }
+      });
+
+      if (responses[0] && !responses[0].error) {
+        datasets.push({
+          label: 'SO2',
+          data: responses[0].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        });
+      }
+      if (responses[1] && !responses[1].error) {
+        datasets.push({
+          label: 'NO2',
+          data: responses[1].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
+          backgroundColor: 'rgba(200, 200, 0, 0.2)',
+          borderColor: 'rgba(200, 200, 0, 1)',
+          borderWidth: 1
+        });
+      }
+      if (responses[2] && !responses[2].error) {
+        datasets.push({
+          label: 'O3',
+          data: responses[2].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
+          backgroundColor: 'rgba(0, 0, 200, 0.2)',
+          borderColor: 'rgba(0, 0, 200, 1)',
+          borderWidth: 1
+        });
+      }
+      if (responses[3] && !responses[3].error) {
+        datasets.push({
+          label: 'PM10',
+          data: responses[3].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
+          backgroundColor: 'rgba(0, 200, 0, 0.2)',
+          borderColor: 'rgba(0, 200, 0, 1)',
+          borderWidth: 1
+        });
+      }
+      if (responses[4] && !responses[4].error) {
+        datasets.push({
+          label: 'PM25',
+          data: responses[4].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
+          backgroundColor: 'rgba(128, 0, 132, 0.2)',
+          borderColor: 'rgba(128, 0, 132, 1)',
+          borderWidth: 1
+        });
+      }
+      
+
+      this.tmonthlyChart.data.datasets =datasets;
+      this.tmonthlyChart.data.labels = labels;
+      this.tmonthlyChart.update();
+
+      }).catch(error => {console.error("Error in Promise.all: ", error);});
+      
+    },  
     
   getCurrentDate() {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // 月份是从0开始的
+    const month = String(today.getMonth() + 1).padStart(2, '0'); 
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
     },
@@ -439,30 +435,26 @@ export default {
     today.setDate(today.getDate() - num);
 
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // 月份是从 0 开始的
+    const month = String(today.getMonth() + 1).padStart(2, '0'); 
     const day = String(today.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
     },
     handleChangeSelect() {
-    this.weeklyChartUpdated = false; // 每次更改 select 时将标志设置为 false
-    // 其他处理逻辑
+    this.weeklyChartUpdated = false; 
   }
   },
 
 
   watch: {
-    selectedSite() {
 
+    //monitor user selection. update chart when selectedSite changes. 
+    selectedSite() {
       this.updateWeeklyChart();
       this.updateMonthlyChart();
       this.update3MonthlyChart();
-
-      //this.fetchAndInitMonthlyChart();
-      //this.fetchAndInit3MonthlyChart();
   }
   }
 }
-
 
 </script>
