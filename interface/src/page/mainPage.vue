@@ -16,12 +16,11 @@
         <!-- Sidebar -->
         <el-aside class="sidebar">
           <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true">
-            <el-menu-item index="1" @click="toInhaler">InhalerLogging</el-menu-item>
-            <el-menu-item index="2" @click="toMap">Map</el-menu-item>
-            <el-menu-item index="3" @click="toHistory">History</el-menu-item>
-            <el-menu-item index="4" @click="toAdvice">Advice</el-menu-item>
-            <el-menu-item index="5" @click="toSetting">Settings</el-menu-item>
-            <!-- ...其他菜单项... -->
+            <el-menu-item index="1" @click="toInhaler"><el-icon><House /></el-icon>InhalerLogging</el-menu-item>
+            <el-menu-item index="2" @click="toMap"><el-icon><MapLocation /></el-icon>Map</el-menu-item>
+            <el-menu-item index="3" @click="toHistory"><el-icon><PieChart /></el-icon>History</el-menu-item>
+            <el-menu-item index="4" @click="toAdvice"><el-icon><ChatSquare /></el-icon>Advice</el-menu-item>
+            <el-menu-item index="5" @click="toSetting"><el-icon><Setting /></el-icon>Settings</el-menu-item>
           </el-menu>
         </el-aside>
 
@@ -38,6 +37,8 @@
 
 
 <script>
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 export default {
   data() {
     return {
@@ -45,7 +46,12 @@ export default {
       userName: 'User',
       currentDate: new Date().toLocaleDateString(),
       currentTime: new Date().toLocaleTimeString(),
+      activeIndex: "1"
     };
+  const app = createApp(App)
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}
   },
   methods: {
     updateDateTime() {
@@ -54,19 +60,25 @@ export default {
     },
     toInhaler(){
       this.$router.push({ name: "InhalerLogging"})
-    },
-    toAdvice(){
-      this.$router.push({ name:"Travelling"})
-    },
-    toHistory(){
-      this.$router.push({ name:"History"})
-    },
-    toSetting(){
-      this.$router.push({ name:"Settings"})
+      this.activeIndex = "1"
     },
     toMap(){
       this.$router.push({ name:"Map"})
+      this.activeIndex = "2"
+    },
+    toHistory(){
+      this.$router.push({ name:"History"})
+      this.activeIndex = "3"
+    },
+    toAdvice(){
+      this.$router.push({ name:"Travelling"})
+      this.activeIndex = "4"
+    },
+    toSetting(){
+      this.$router.push({ name:"Settings"})
+      this.activeIndex = "5"
     }
+
   },
   mounted() {
     this.interval = setInterval(this.updateDateTime, 1000);
@@ -83,6 +95,12 @@ $height: 100%;
 $background-color: #5251b1;
 $header-color: #fff;
 $header-height: 60px;
+
+.el-menu-vertical-demo .el-menu-item.is-active {
+  background-color: #3399ff; 
+  color: #fff ;
+}
+
 
 .container {
   position: relative;
@@ -146,3 +164,4 @@ $header-height: 60px;
 }
 
 </style>
+
