@@ -2,6 +2,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.FileReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class getNameSite {
     //    public getNameSite(){
     public static void main(String[] args) {
-        try {
+        try { // interact with API ot get the JSON onject
 //            https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/GroupName=London/Date=2023-11-27/Json
 //            Greenwich - Westhorne Avenue / Greenwich - Plumstead High Street- seems like a good option
             String url_str = "https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/GroupName=London/Date=2023-11-27/Json";
@@ -22,19 +23,20 @@ public class getNameSite {
             dataObject.add(obj);
 //                JSONArray dataObject = (JSONArray) parser.parse(String.valueOf(informationString));
 
+
             //Get the first JSON object in the JSON array
             System.out.println(dataObject.get(0));
 
             JSONObject airQualityIndex = (JSONObject) dataObject.get(0);
-            System.out.println(airQualityIndex.get("DailyAirQualityIndex"));
 
             JSONObject dailyAirQualityIndex = (JSONObject) airQualityIndex.get("DailyAirQualityIndex");
             JSONArray localAuthority = (JSONArray) dailyAirQualityIndex.get("LocalAuthority");
 //                System.out.println(localAuthority);
 
-            HashMap<String, String> LA_name_code_dict = new HashMap<>();
-            HashMap<String, String> site_name_code_dict = new HashMap<>();
-            HashMap<String, ArrayList<String>> LA_site_dict = new HashMap<>();
+            // creating hashmap to store the different name and corresponding codes
+            HashMap<String, String> LA_name_code_dict = new HashMap<>(); // local authority name and corresponding code
+            HashMap<String, String> site_name_code_dict = new HashMap<>();// site name and corresponding code
+            HashMap<String, ArrayList<String>> LA_site_dict = new HashMap<>(); // local authority name and corresponding sites
 
             HashMap<String, ArrayList<String>> site_species_dict = new HashMap<>();
 
@@ -121,28 +123,6 @@ public class getNameSite {
             // Add all values from the site_name_code_dict to the ArrayList
             siteNames.addAll(site_name_code_dict.values());
 
-//                // Print the siteNames ArrayList to see if it works
-//                for (String siteName : siteNames) {
-//                    System.out.println(siteName);
-//                }
-
-            // printing output of each key-value pair in each hashmap
-            // for Local authority name and corresponding code
-//                for (Map.Entry<String, String> entry : LA_name_code_dict.entrySet()) {
-//                    System.out.println(entry.getKey() + ": " + entry.getValue());
-//                }
-            // for site name and site code
-//                for (Map.Entry<String, String> entry : site_name_code_dict.entrySet()) {
-//                    System.out.println(entry.getKey() + ": " + entry.getValue());
-//                }
-            // for Local authority name and corresponding sites
-//                for (Map.Entry<String, ArrayList<String>> entry : LA_site_dict.entrySet()) {
-//                    System.out.println(entry.getKey() + ": " + entry.getValue());
-//                }
-            // for site name and corresponding species code
-//                for (Map.Entry<String, ArrayList<String>> entry : site_species_dict.entrySet()) {
-//                    System.out.println(entry.getKey() + ": " + entry.getValue());
-//                }
 
             // Convert HashMaps to JSON objects
             JSONObject LA_NameCode_Json = new JSONObject(LA_name_code_dict);
@@ -156,8 +136,63 @@ public class getNameSite {
             writeJsonToFile(laSiteJson, "LA_site_code.json");
             writeJsonToFile(siteSpeciesJson, "site_species.json");
 
+            // ------------------------
+            // separate link to get all the sites no matter if they have any monitored air pollutants or not
+            // to get all site codes and name
+            String url_all_sites = "https://api.erg.ic.ac.uk/AirQuality/Information/MonitoringSites/GroupName=London/Json";
+            urlReader reader_all_sites = new urlReader(url_all_sites);
+            Object obj_all_sites = reader_all_sites.getURL_obj();
+            JSONArray dataObject_all_sites = new JSONArray();
+            dataObject_all_sites.add(obj_all_sites);
 
-        } catch (Exception e) {
+            HashMap<String, String> all_site_name_code_dict = new HashMap<>();
+
+            JSONObject sitesObject = (JSONObject) dataObject_all_sites.get(0);
+            JSONObject sitesContainer = (JSONObject) sitesObject.get("Sites");
+            JSONArray sitesArray = (JSONArray) sitesContainer.get("Site");
+
+            for (Object siteObj : sitesArray) {
+                JSONObject site = (JSONObject) siteObj;
+                String siteName = (String) site.get("@SiteName");
+                String siteCode = (String) site.get("@SiteCode");
+                all_site_name_code_dict.put(siteCode, siteName);
+            }
+
+            JSONObject allsiteNameCodeJson = new JSONObject(all_site_name_code_dict);
+            writeJsonToFile(allsiteNameCodeJson, "Site_name_code_all.json");
+
+
+            // chunk to get list of all site codes
+            JSONArray siteCodesArray = new JSONArray();
+
+            for (Object siteObj : sitesArray) {
+                JSONObject site = (JSONObject) siteObj;
+                String siteCode = (String) site.get("@SiteCode");
+                siteCodesArray.add(siteCode);
+            }
+
+            JSONObject siteCodesJson = new JSONObject();
+            siteCodesJson.put("SiteCodes", siteCodesArray);
+
+            writeJsonToFile(siteCodesJson, "Site_codes_only.json");
+
+//          only save the site code for the one that has species
+            JSONParser parser = new JSONParser();
+
+            try (FileReader reader2 = new FileReader("Site_name_code.json")) {
+                JSONObject jsonObject = (JSONObject) parser.parse(reader2);
+                Set<String> keys = jsonObject.keySet();
+                List<String> siteCodes = new ArrayList<>(keys);
+
+                JSONObject outputJson = new JSONObject();
+                outputJson.put("siteCodes", siteCodes);
+
+                writeJsonToFile(outputJson, "Site_codes_only_site_with_species.json");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -16,7 +16,7 @@ public class histData {
         try {
             // here will be changed to get input from frontend later on
             String siteCode = "BG1"; // Set the SiteCode here
-            String speciesCode = "O3"; // Set the SpeciesCode here
+            String speciesCode = "NO2"; // Set the SpeciesCode here
             String startDate = "2023-11-27"; // Set the StartDate here
             String endDate = "2023-12-15"; // Set the EndDate here
 
@@ -63,7 +63,7 @@ public class histData {
                         System.out.println(value);
                     }
                 }else{
-                    System.out.println("Error: Data for species chosen is not avalaible for this site");
+                    System.out.println("Error: Data or species chosen is invalid for this site");
                 }
 
             } catch (Exception e) {

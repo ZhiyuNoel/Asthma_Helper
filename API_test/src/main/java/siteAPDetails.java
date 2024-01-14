@@ -41,10 +41,16 @@ public class siteAPDetails {
         */
 
         try {
+            // Change to variable to recieve input from frontend
+            String localAuthorityId = "11"; // Set LocalAuthorityId here
+            String date = "2023-11-27"; // Set Date here
+            String siteName = "Greenwich - Westhorne Avenue"; // Set SiteName here
+
             //LondonAIR API:
             // https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/GroupName=London/Date=2023-11-27/Json
             // Greenwich - Westhorne Avenue / Greenwich - Plumstead High Street- seems like a good option
-            String url_str = "https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/LocalAuthorityId=11/Date=2023-11-27/Json";
+            // Construct the URL with the variables
+            String url_str = "https://api.erg.ic.ac.uk/AirQuality/Daily/MonitoringIndex/LocalAuthorityId=" + localAuthorityId + "/Date=" + date +  "/Json";
             urlReader reader = new urlReader(url_str);
             Object obj = reader.getURL_obj();
             JSONArray dataObject = new JSONArray();
@@ -67,7 +73,7 @@ public class siteAPDetails {
 
                 for (int i = 0; i < sites.size(); i++) {
                     JSONObject site = (JSONObject) sites.get(i);
-                    if (site.get("@SiteName").equals("Greenwich - Westhorne Avenue")) {
+                    if (site.get("@SiteName").equals(siteName)) {
                         desiredSite = site;
                         break;
                     }
