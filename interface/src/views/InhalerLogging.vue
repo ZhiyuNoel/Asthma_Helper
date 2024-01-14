@@ -7,7 +7,7 @@
 
         <div class="card-section">
           <div class="card reliever">
-            <font size="5"> Reliever</font>
+            <strong><font size="5"> Reliever</font></strong>
             <p>{{ puffsToday }} puffs today</p>
             <p>{{ puffsThisWeek }} puffs this week</p>
             <p class="frequency-label"><strong>Frequency</strong></p>
@@ -31,7 +31,7 @@
         <!-- Preventer Section (shown only if needed) -->
         <div v-if="selectedInhalerType === 'preventer'" class="card-section">
           <div class="card preventer">
-            <h2>Preventer</h2>
+            <strong><font size="5"> Combination</font></strong>
             <div @click="toggleDose('morningDose')" class="dose">
               <span>
                 <i class="fas fa-sun"></i>
@@ -65,7 +65,7 @@
         <!-- Combination  Section (shown only if needed) -->
         <div v-if="selectedInhalerType === 'combination'" class="card-section">
           <div class="card combination">
-            <font size="5"> Combination</font>
+            <strong><font size="5"> Combination</font></strong>
             <div @click="toggleDose('morningDose')" class="dose">
               <span>
                 <i class="fas fa-sun"></i>
@@ -115,6 +115,9 @@
   <!-- <button @click="resetEverything">Reset Everything (Dev)</button> (for developer testing only)-->
 </div>
 
+<!-- The LogHistory component is conditionally rendered when 'currentView' is 'logHistory'.
+It emits events for log deletion and view change, handled by respective methods in the parent.-->
+
 <LogHistory
     v-if="currentView === 'logHistory'"
     @log-deleted="handleLogDeletion"
@@ -127,13 +130,16 @@
 <script>
 import LogHistory from '@/components/LogHistory.vue'
 
-// Object constructor for DoseTracker
+// DoseTracker class: Manages the inhaler doses, including logging puffs and resetting doses.
 export class DoseTracker {
   constructor(initialDoses) {
   this.totalDoses = initialDoses;
   this.dosesRemaining = initialDoses;
   }
+
   logPuff(numberOfPuffs) {
+  // Logs the number of puffs taken and decreases the remaining doses. 
+  // Alerts if no doses are remaining.
     if (this.dosesRemaining >= numberOfPuffs) {
       this.dosesRemaining -= numberOfPuffs;
       return true;
@@ -143,6 +149,7 @@ export class DoseTracker {
     }
   }
   resetIfNewDay() {
+  // Resets the doses remaining to the total if a new day has started.
     const today = new Date();
     if (today.toDateString() !== this.lastResetDate) {
       this.dosesRemaining = this.totalDoses;
@@ -150,6 +157,7 @@ export class DoseTracker {
     }
   }
   getOverlayStyle() {
+    //Calculates and returns the style for the dose progress bar based on remaining doses.
     const ratio = Math.min(Math.max((this.totalDoses - this.dosesRemaining) / this.totalDoses, 0), 1);
     return {
     width: `${ratio * 100}%`,
@@ -212,9 +220,12 @@ export default {
       }
     },
     frequencyStatus() {
+    //Determines if the usage frequency is normal or abnormal.
       return this.puffsThisWeek > this.abnormalFrequencyThreshold ? 'Abnormal' : 'Normal';
     },
     overlayStyle() {
+    //Calculates the styling for the dose progress bar, including its width
+    // and background color, based on the ratio of doses remaining.
       const ratio = 1 - (this.dosesRemaining / this.totalDoses);
       return {
         width: `${ratio * 100}%`,
@@ -223,6 +234,7 @@ export default {
     },
     
     warningMessage() {
+    //Generates warning messages based on the weekly puff count and remaining doses.
     let messages = [];
      const lowDoseThresholdReliever = this.reliever.totalDoses * (parseInt(localStorage.getItem('relieverLowDoseThreshold') || 20) / 100);
       const lowDoseThresholdPreventer = this.preventer.totalDoses * (parseInt(localStorage.getItem('preventerLowDoseThreshold') || 20) / 100);
@@ -254,12 +266,15 @@ export default {
 
   methods: {
     handleChangeView(newView) {
+    // Changes the current view of the component to the specified 'newView'.
       this.currentView = newView;
     },
     showLogHistory() {
+    // Sets the current view to 'logHistory' to display the log history component.
       this.currentView = 'logHistory';
     },
     handleLogDeletion() {
+    // Handles the deletion of a log entry, updating puffs count and doses remaining accordingly.
       console.log("handleLogDeletion");
       this.puffsToday -= 1;
       this.puffsThisWeek -= 1;
@@ -268,11 +283,13 @@ export default {
     },
     
     handleLocalStorageChange() {
+    // Reloads the state and updates morning and evening doses when local storage changes.
         this.loadState();
         this.updateMorningAndEveningDoses();
     },
 
     updateMorningAndEveningDoses() {
+    // Updates the details of morning and evening doses, including the number of puffs and time
       this.morningDose.numberOfPuffs = this.getStoredSetting('morningNumberOfPuffs', 2);
       this.morningDose.time = this.getStoredSetting('morningTime', '9:00am');
       this.eveningDose.numberOfPuffs = this.getStoredSetting('eveningNumberOfPuffs', 2);
@@ -280,6 +297,7 @@ export default {
     },
 
     updateDosesRemaining() {
+    // Updates the remaining doses for both reliever and preventer inhalers from local storage.
       this.reliever.dosesRemaining = parseInt(localStorage.getItem('relieverDosesRemaining'), 10);
       this.preventer.dosesRemaining = parseInt(localStorage.getItem('preventerDosesRemaining'), 10);
     },
@@ -302,6 +320,8 @@ export default {
     // },
 
     getStoredSetting(key, defaultValue) {
+    // Retrieves a setting from local storage by key. If the key is not found, returns a default value.
+    // It tries to parse the value as JSON, and if parsing fails, returns the raw string.
       const value = localStorage.getItem(key);
       if (value === null) {
         return defaultValue;
@@ -351,6 +371,8 @@ export default {
     },
 
     localStorageChanged(event) {
+    //Handles changes to local storage. If specific keys related to doses are changed, it dispatches 
+    //a custom event to trigger updates in the component.
       console.log("Local storage changed:", event.key);
       // Check if the changed key is one of the relevant keys
       if (event.key === 'relieverDoses' || event.key === 'preventerDoses') { 
@@ -361,6 +383,8 @@ export default {
 
 
     logPuff() {
+    // Logs a puff for the reliever inhaler. It updates the daily and weekly puff counts, 
+    // and records the action in the log history.
       const logSuccess = this.reliever.logPuff(1);
       if (logSuccess) {
         this.puffsToday += 1;
@@ -379,11 +403,13 @@ export default {
     },
 
     getSetting(key, defaultValue) {
+    // A utility method to fetch a value from local storage.
       const value = localStorage.getItem(key);
       return value !== null ? value : defaultValue;
     },
 
     refreshDoses() {
+    // Refreshes the number of puffs and time for morning and evening doses based on stored settings.
       this.morningDose.numberOfPuffs = parseInt(this.getSetting('morningNumberOfPuffs', '2'), 10);
       this.morningDose.time = this.getSetting('morningTime');
       this.eveningDose.numberOfPuffs = parseInt(this.getSetting('eveningNumberOfPuffs', '2'), 10);
@@ -401,6 +427,9 @@ export default {
     },
     
     toggleDose(doseType) {
+    // Toggles the taken state of a dose (morning or evening). It updates the doses remaining 
+    // and logs this action in the dose history.
+
       const dose = this[doseType];
       const wasTaken = dose.taken;
       dose.taken = !dose.taken;
@@ -422,6 +451,9 @@ export default {
     },
 
     logDose(timeOfDay, action, wasTaken) {
+    // Logs the action (clicked/unclicked) of a dose (morning/evening) in the history, 
+    // along with the time and dose type.
+
       const now = new Date().toISOString();
       let logHistory = JSON.parse(localStorage.getItem('logHistory')) || [];
       let doseType = this.selectedInhalerType; 
@@ -437,39 +469,45 @@ export default {
     },
 
     checkAndResetCounts: function() {
-        const today = new Date();
-        const lastUsedDate = new Date(localStorage.getItem('lastUsedDate'));
-        const lastUsedWeek = new Date(localStorage.getItem('lastUsedWeek'));
+    // Checks and resets the daily and weekly puff counts based on the current date. 
+    // It ensures the counts are updated at the start of a new day or week.
+      const today = new Date();
+      const lastUsedDate = new Date(localStorage.getItem('lastUsedDate'));
+      const lastUsedWeek = new Date(localStorage.getItem('lastUsedWeek'));
 
-        // Check and reset daily count
-        if (today.toDateString() !== lastUsedDate.toDateString()) {
-            localStorage.setItem('puffsToday', 0); // Reset daily count
-            localStorage.setItem('lastUsedDate', today.toISOString()); // Update last used date
-        }
+      // Check and reset daily count
+      if (today.toDateString() !== lastUsedDate.toDateString()) {
+          localStorage.setItem('puffsToday', 0); 
+          localStorage.setItem('lastUsedDate', today.toISOString()); 
+      }
 
-        // Check and reset weekly count
-        if (this.getWeekNumber(today) !== this.getWeekNumber(lastUsedWeek)) {
-            localStorage.setItem('puffsThisWeek', 0); // Reset weekly count
-            localStorage.setItem('lastUsedWeek', today.toISOString()); // Update last used week
-        }
+      // Check and reset weekly count
+      if (this.getWeekNumber(today) !== this.getWeekNumber(lastUsedWeek)) {
+          localStorage.setItem('puffsThisWeek', 0); 
+          localStorage.setItem('lastUsedWeek', today.toISOString()); 
+      }
     },
 
     getWeekNumber: function(date) {
+    // Calculates the week number of the year for a given date. 
+    // This is used for tracking weekly puff counts.
         const startOfYear = new Date(date.getFullYear(), 0, 1);
         const pastDaysOfYear = (date - startOfYear) / 86400000;
         return Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7);
     },
 
     addNewReliever() {
-      this.reliever.dosesRemaining = this.getStoredDoses('relieverDoses'); // Reset to initial value
-      this.saveState(); // Save the updated state
+    // Resets the doses remaining for the reliever inhaler to its initial value and saves the state.
+      this.reliever.dosesRemaining = this.getStoredDoses('relieverDoses'); 
+      this.saveState(); 
     },
 
     addNewPreventer() {
-      this.preventer.dosesRemaining = this.getStoredDoses('preventerDoses'); // Reset to initial value
+    // Resets the doses remaining for the preventer inhaler to its initial value, marks morning and evening doses as not taken, and saves the state.
+      this.preventer.dosesRemaining = this.getStoredDoses('preventerDoses'); 
       this.morningDose.taken = false;
       this.eveningDose.taken = false;
-      this.saveState(); // Save the updated state
+      this.saveState(); 
     },
     
   },
@@ -637,10 +675,6 @@ button:hover {
 }
 
 .log-history-btn {
-  //position: absolute;
-  //bottom: 20px;
-  ////right: 20px;
-  //margin-top: 20px;
   padding: 10px 20px;
   background-color: #a792ba; 
   color: white;

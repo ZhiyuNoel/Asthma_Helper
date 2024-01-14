@@ -35,15 +35,18 @@ export default {
   },
   computed: {
     relieverLogs() {
+    //Filters and returns only the log entries where the type is 'reliever' from the array of logs.
       return this.logs.filter(log => log.type === 'reliever');
     },
     preventerCombinationLogs() {
+    //Filters and returns the log entries that are not of type 'reliever', which includes preventer and combination logs.
       return this.logs.filter(log => log.type !== 'reliever');
     },
   },
 
   methods: {
     backToHome() {
+    //Emits a 'change-view' event to the parent component to switch the current view back to the default home view.
       this.$emit('change-view', 'default'); // Emit an event to request view change
     },
     deleteLog(log, index) {
@@ -70,6 +73,7 @@ export default {
       }
     },
     clearLogHistory() {
+    //Clears the entire log history after confirming with the user.
       if (window.confirm("Are you sure you want to clear the logging history? This action cannot be undone.")) {
         localStorage.setItem('logHistory', JSON.stringify([])); 
         this.logs = []; 

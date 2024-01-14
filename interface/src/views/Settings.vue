@@ -49,60 +49,6 @@
       </el-row>
       <button type="submit">Save</button>
       </form>
-
-
-<!--      <form @submit.prevent="saveSettings">-->
-<!--            <div>-->
-<!--                <label for="inhalerType">Select Additional Inhaler (if required) :</label>-->
-<!--                <select id="inhalerType" v-model="selectedInhalerType">-->
-<!--                    <option value="none">None</option>-->
-<!--                    <option value="preventer">Preventer</option>-->
-<!--                    <option value="combination">Combination</option>-->
-<!--                </select>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <label for="relieverDoses">Total Reliever Doses:</label>-->
-<!--                <input type="number" id="relieverDoses" v-model.number="relieverDoses">-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <label for="abnormalFrequency">Abnormal Frequency Threshold:</label>-->
-<!--                <input type="number" id="abnormalFrequency" v-model.number="abnormalFrequency">-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <label for="relieverLowDoseThreshold">Reliever Low Dose Threshold (%):</label>-->
-<!--                <input type="number" id="relieverLowDoseThreshold" v-model.number="relieverLowDoseThreshold">-->
-<!--            </div>-->
-
-<!--            <div v-if="selectedInhalerType === 'preventer' || selectedInhalerType === 'combination'">-->
-<!--                 <h3>Combination/Preventer Settings</h3>-->
-<!--                <div>-->
-<!--                    <label for="preventerDoses">Total Doses:</label>-->
-<!--                    <input type="number" id="preventerDoses" v-model.number="preventerDoses">-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="morningNumberOfPuffs">Morning Dose Number of Puffs:</label>-->
-<!--                    <input type="number" id="morningNumberOfPuffs" v-model.number="morningNumberOfPuffs">-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="morningTime">Morning Dose Time:</label>-->
-<!--                    <input type="time" id="morningTime" v-model="morningTime">-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="eveningNumberOfPuffs">Evening Dose Number of Puffs:</label>-->
-<!--                    <input type="number" id="eveningNumberOfPuffs" v-model.number="eveningNumberOfPuffs">-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="eveningTime">Evening Dose Time:</label>-->
-<!--                    <input type="time" id="eveningTime" v-model="eveningTime">-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="preventerLowDoseThreshold">Low Dose Threshold (%):</label>-->
-<!--                    <input type="number" id="preventerLowDoseThreshold" v-model.number="preventerLowDoseThreshold">-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <button type="submit">Save</button>-->
-<!--        </form>-->
     </div>
 </template>
 
@@ -125,10 +71,13 @@ export default {
   },
   methods: {
     getStoredDoses(key, defaultValue) {
+    // Retrieves the number of stored doses for a given inhaler type ('key') from local storage.
+    // If the key is not found, returns a specified default value.      
       const value = localStorage.getItem(key);
       return value !== null ? parseInt(value, 10) : defaultValue;
     },
     saveSettings() {
+    // Saves the current settings to local storage.
       localStorage.setItem('relieverDoses', this.relieverDoses.toString());
       localStorage.setItem('abnormalFrequency', this.abnormalFrequency.toString());
       localStorage.setItem('preventerDoses', this.preventerDoses.toString());
