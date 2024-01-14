@@ -16,4 +16,6 @@
 
 **urlReader** is a class that helps to handle reading the json object that is fetched from a given link from the API
 
-TBC- latestAP is a class to return the latest hourly Air pollution details for a given site 
+
+**lowDaysMonthlyData** is a class that helps to handle reading the number of low days for each month for each species that a site monitor across all the sites in a list that is provided for a given year that is provided
+
