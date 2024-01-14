@@ -1,76 +1,93 @@
 <template>
   <section>
         <el-main class="main">
-          <!-- <div>
-            <select id="siteSelect" v-model="selectedSite">
-              <option v-for="(name, code) in sites" :key="code" :value="code">
-                {{ name }}
-              </option>
-            </select>
-          </div> -->
-          <div>
-            Top favourable sites to live in based on Percentage of Days with Low DAQI index (Up to 10)<br />
-            Based on Species:
+          
+          <div class="top-results-container">
+            <h3>Top favourable sites to live in based on Percentage of Days with Low DAQI index (Up to 10)</h3><br />
+            <div class="selection-container">
+            <div class="selection-item">
+              Based on Air Pollutant:
             <select id="speciesSelectTop" v-model="selectedTopSpecies">
               <option v-for="(name, code) in species" :key="code" :value="code">
                 {{ name }}
               </option>
             </select>
-            and Month:
+          </div>
+            <div class="selection-item">
+              and Month:
             <select id="monthSelectedTop" v-model="selectedTopMonth">
               <option v-for="(name, code) in months" :key="code" :value="code">
                 {{ name }}
               </option>
             </select>
+          </div>
+          <div class="selection-item">
           Up to:
           <select id="choseTopNumber" v-model="choseTopNumber">
               <option v-for="(name) in topNumber">
                 {{ name }}
               </option>
-            </select></div>
-          <!-- Species Chosen for Top 10: {{ this.selectedTopSpecies }} 
-          Month Chosen for Top 10: {{ this.selectedTopMonth }} <br /> -->
-          <div>
-              <div v-for="item  in this.top10details">
+            </select>
+          </div>
+          </div>
+          <!-- Species Chosen for Top 10: {{ this.selectedTopSpecies }}  -->
+          <!-- Month Chosen for Top 10: {{ this.selectedTopMonth }} <br /> -->
+          <!-- <div>
+              <div v-for="item  in this.topMessgaeDetails">
               {{ item }}
-              </div>
-              <div>
-              <p>
-                According to Species:
+              </div> -->
+              <div class="top-10-list">
+          <div v-for="item in this.topMessgaeDetails" class="top-10-item">
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="comparison-container">
+        <h3>Comparison between two sites:</h3>
+        <div class="site-selection"></div>
+                According to Air Pollutant:
             <select id="speciesSelectCompare" v-model="selectedSpeciesCompare">
               <option v-for="(name, code) in species" :key="code" :value="code">
                 {{ name }}
               </option>
             </select>
           <br />
-          And looking between 
+          <div class="selection-container">
+            <div class="selection-item">
+          And looking between: 
           
             <select id="siteSelect1" v-model="selectedSite1">
               <option v-for="(name, code) in sites" :key="code" :value="code">
                 {{ name }}
               </option>
             </select>
-
+          </div>
+            <div class="selection-item">
           and 
 
             <select id="siteSelect2" v-model="selectedSite2">
               <option v-for="(name, code) in sites" :key="code" :value="code">
                 {{ name }}
               </option>
-            </select></p>
+            </select>
           </div>
+          
+          <!-- {{this.comparisonResult}} -->
+        </div>
+        <div class="comparison-result-container">
+            {{ this.comparisonResult }}
+          </div>  
+      </div>
 
-            <!-- <p v-html="this.top10details"></p> -->
+
+            <!-- <p v-html="this.topMessgaeDetails"></p> -->
             <!-- First Site Chosen: {{ this.selectedSite1 }} <br />
             Second Site Chosen: {{ this.selectedSite2 }} <br />
             Species Chosen: {{ this.selectedSpeciesCompare }} <br /> -->
-       
-            <p v-html="this.comparisonResult"></p>
-          </div>
-          <transition name="fade" mode="out-in">
-            <router-view></router-view>
-          </transition>
-        </el-main>
+  <transition name="fade" mode="out-in">
+    <router-view></router-view>
+  </transition>
+</el-main>
   </section>
   </template>
   
@@ -99,18 +116,9 @@
       choseTopNumber: null,
       topNumber: [3,5,10],
       site_Selected:'',
-      top10details: [
-      "1st -",
-      "2nd -",
-      "3rd -",
-      "4th -",
-      "5th -",
-      "6th -",
-      "7th -",
-      "8th -",
-      "9th -",
-      "10th -"
-    ],
+      topMessgaeDetails: [
+      'Please select both sites and a species to compare.'
+      ],
     }
   }
   
@@ -173,7 +181,7 @@
         else{var message = `${i+1}th - \t ${siteName} (${percentageLowDays}%)`;}
         messages.push(message);
       }
-      this.top10details = messages;
+      this.topMessgaeDetails = messages;
 
       console.log(messages); // Output the messages
       
@@ -274,6 +282,53 @@
   
   <style scoped="scoped"
     lang="scss">
+    .top-results-container, .comparison-container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .comparison-result-container {
+      background-color: #f2f2f2; /* Light grey background */
+      padding: 10px;
+      margin-top: 10px; /* Add some space above the box */
+      border-radius: 4px; /* Rounded corners */
+      border: 1px solid #e0e0e0; /* Subtle border */
+      /* Additional styles to match your .top-10-item, if any */
+    }
+    
+    .selection-container {
+      display: flex;
+      align-items: center;
+      /* justify-content: start; */
+      gap: 5px; /* creating space between the flex items */
+    }
+    .selection-item {
+      margin-right: 5px; /* Additional spacing, if needed */
+    }
+    .top-10-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .top-10-item {
+      background: #e9e9e9;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 5px;
+    }
+
+    .site-selection {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    h2, h3 {
+      color: #333;
+    }
     .tab {
       margin-left: 20px; /* This creates a space equivalent to a tab */
     }
