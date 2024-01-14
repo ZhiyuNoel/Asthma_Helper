@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div v-if="currentView === 'default'">
 
     <!-- Default view content (Inhaler Logging Page)-->
@@ -7,7 +7,7 @@
 
         <div class="card-section">
           <div class="card reliever">
-            <h2>Reliever</h2>
+            <font size="5"> Reliever</font>
             <p>{{ puffsToday }} puffs today</p>
             <p>{{ puffsThisWeek }} puffs this week</p>
             <p class="frequency-label"><strong>Frequency</strong></p>
@@ -65,7 +65,7 @@
         <!-- Combination  Section (shown only if needed) -->
         <div v-if="selectedInhalerType === 'combination'" class="card-section">
           <div class="card combination">
-            <h2>Combination</h2>
+            <font size="5"> Combination</font>
             <div @click="toggleDose('morningDose')" class="dose">
               <span>
                 <i class="fas fa-sun"></i>
@@ -98,13 +98,14 @@
     </div>
 
     <div v-if="warningMessage" class="warning-box">
-      <strong>!!Warning!!</strong>
-      <p v-html="warningMessage"></p> 
+      <strong><font size="5">Warning</font></strong>
+      <font size="4"><p v-html="warningMessage"></p> </font>
     </div>
   </div>
-
-  <button @click="showLogHistory" class="log-history-btn">Logging History</button>
-  <component
+    <div align="center">
+  <button @click="showLogHistory" style="display:block;margin-top:20px;" class="log-history-btn" >Logging History</button>
+  </div>
+      <component
     v-if="currentComponent"
     :is="currentComponent"
     @log-deleted="handleLogDeletion"
@@ -577,6 +578,7 @@ button {
   background-color: #26c6da;
   color: white;
   cursor: pointer;
+
 }
 
 button:hover {
@@ -621,7 +623,7 @@ button:hover {
 .warning-box-section {
   width: 100%; 
   display: flex;
-  justify-content: center; 
+  justify-content: center;
 }
 
 .warning-box {
@@ -635,9 +637,10 @@ button:hover {
 }
 
 .log-history-btn {
-  position: absolute;
-  bottom: 20px; 
-  right: 20px; 
+  //position: absolute;
+  //bottom: 20px;
+  ////right: 20px;
+  //margin-top: 20px;
   padding: 10px 20px;
   background-color: #a792ba; 
   color: white;
