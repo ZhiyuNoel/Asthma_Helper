@@ -3,12 +3,16 @@
     <el-container class="container">
       <!-- Header -->
       <el-header class="header">
-        <img src="../assets/logo_asthma.png" alt="Logo" class="logo" />
-        <span class="system-name">{{ systemName }}</span>
-        <div class="header-info">
-          <span class="date-time">{{ currentDate }} {{ currentTime }}</span>
-          <span class="user-info">Hello, {{ userName }}</span>
-        </div>
+        <el-header class="header-left">
+          <img src="../assets/logo_asthma.png" alt="Logo" class="logo" />
+        </el-header>
+        <el-header class="header-right">
+          <span class="system-name">{{ systemName }}</span>
+          <div class="header-info">
+            <span class="date-time">{{ currentDate }} {{ currentTime }}</span>
+            <span class="user-info">Hello, {{ userName }}!</span>
+          </div>
+        </el-header>
       </el-header>
 
       <!-- Layout for sidebar and main content -->
@@ -37,7 +41,6 @@
 
 
 <script>
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 export default {
   data() {
@@ -48,10 +51,7 @@ export default {
       currentTime: new Date().toLocaleTimeString(),
       activeIndex: "1"
     };
-  const app = createApp(App)
-  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
-}
+
   },
   methods: {
     updateDateTime() {
@@ -92,14 +92,8 @@ export default {
 <style scoped lang="scss">
 $width: 100%;
 $height: 100%;
-$background-color: #5251b1;
-$header-color: #fff;
-$header-height: 60px;
-
-.el-menu-vertical-demo .el-menu-item.is-active {
-  background-color: #3399ff; 
-  color: #fff ;
-}
+$background-color: #334455;
+$header-height: 30%;
 
 
 .container {
@@ -116,25 +110,41 @@ $header-height: 60px;
   }
 
   .sidebar {
-    width: 200px; // fixed width for sidebar
+    width: 20%;
+    background-color: #1f202d;
+    border-right: 1px solid #ffffff;
+
+    .el-menu-vertical-demo .el-menu-item{
+      background-color: #1f202d;
+      color: #888888;
+    }
+    
+    .el-menu-vertical-demo .el-menu-item.is-active {
+      color: #fff ;
+    }
+
   }
 
   .header {
     background-color: $background-color;
-    color: $header-color;
+    color: #000000;
     width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0;
+
 
     .header-left {
       display: flex;
-      align-items: center;
+      align-items:center;
+      width: 20%;
+      background-color: #304156;
+      border-bottom: 1px solid #304156;
     }
 
+
     .logo {
-      height: 40px; // larger logo height
+      height: 80%; // larger logo height
       width: auto; // to maintain aspect ratio
     }
 
@@ -146,7 +156,11 @@ $header-height: 60px;
     .header-right {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
+      background-color: #fff;
+      width:80%;
+      border-bottom: 1px solid #d9d5d5;
+
 
       .date-time {
         margin-right: 10px;
@@ -158,7 +172,7 @@ $header-height: 60px;
   }
 
   .main {
-    width: calc(100% - 200px); // main content width
+    width: calc(100% - 20%); // main content width
     overflow-y: auto; // for scrolling
   }
 }
