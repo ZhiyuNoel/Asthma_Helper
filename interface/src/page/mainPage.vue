@@ -20,7 +20,7 @@
         <!-- Sidebar -->
         <el-aside class="sidebar">
           <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true">
-            <el-menu-item index="1" @click="toInhaler"><el-icon><House /></el-icon>InhalerLogging</el-menu-item>
+            <el-menu-item index="1" @click="toInhaler"><el-icon><House /></el-icon>Inhaler Logging</el-menu-item>
             <el-menu-item index="2" @click="toMap"><el-icon><MapLocation /></el-icon>Map</el-menu-item>
             <el-menu-item index="3" @click="toHistory"><el-icon><PieChart /></el-icon>History</el-menu-item>
             <el-menu-item index="4" @click="toAdvice"><el-icon><ChatSquare /></el-icon>Advice</el-menu-item>
@@ -111,16 +111,18 @@ $header-height: 30%;
 
   .sidebar {
     width: 20%;
-    background-color: #1f202d;
+    background-color: #fff;
     border-right: 1px solid #ffffff;
 
     .el-menu-vertical-demo .el-menu-item{
-      background-color: #1f202d;
-      color: #888888;
+      background-color: #fff;
+      color: #5D6268;
     }
     
     .el-menu-vertical-demo .el-menu-item.is-active {
-      color: #fff ;
+      color: #000 ;
+      background-color: #CAD5E2;
+      font-weight:500;
     }
 
   }
@@ -151,22 +153,25 @@ $header-height: 30%;
     .system-name {
       font-size: large;
       font-weight: bold;
+      color: #F8FAFC;
     }
 
     .header-right {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #fff;
+      background-color: #415773;
       width:80%;
-      border-bottom: 1px solid #d9d5d5;
+      border-bottom: 1px solid #304156;
 
 
       .date-time {
         margin-right: 10px;
+        color: #F8FAFC;
       }
       .user-info {
         margin-left: 10px; 
+        color: #F8FAFC;
       }
     }
   }
