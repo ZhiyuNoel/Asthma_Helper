@@ -1,5 +1,5 @@
 <template>
-    <div class="settings">
+    <div class="settings-row">
         <h2>Settings</h2>
         <form @submit.prevent="saveSettings">
             <div>
@@ -57,11 +57,12 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       relieverDoses: this.getStoredDoses('relieverDoses', 200),
-      abnormalFrequency: parseInt(localStorage.getItem('abnormalFrequency') || 3), // Default to 3
+      abnormalFrequency: parseInt(localStorage.getItem('abnormalFrequency') || 3), 
       preventerDoses: this.getStoredDoses('preventerDoses', 200),
       morningNumberOfPuffs: parseInt(localStorage.getItem('morningNumberOfPuffs') || 2),
       eveningNumberOfPuffs: parseInt(localStorage.getItem('eveningNumberOfPuffs') || 2),
@@ -83,11 +84,13 @@ export default {
       localStorage.setItem('preventerDoses', this.preventerDoses.toString());
       localStorage.setItem('morningNumberOfPuffs', this.morningNumberOfPuffs.toString());
       localStorage.setItem('eveningNumberOfPuffs', this.eveningNumberOfPuffs.toString());
-      localStorage.setItem('morningTime', this.morningTime);
-      localStorage.setItem('eveningTime', this.eveningTime);
+      localStorage.setItem('morningTime', this.morningTime.toString());
+      localStorage.setItem('eveningTime', this.eveningTime.toString());
       localStorage.setItem('relieverLowDoseThreshold', this.relieverLowDoseThreshold.toString());
       localStorage.setItem('preventerLowDoseThreshold', this.preventerLowDoseThreshold.toString());
       localStorage.setItem('selectedInhalerType', this.selectedInhalerType);
+
+      window.dispatchEvent(new Event('localStorageChanged'));
 
       // Notify the user of successful save
       alert('Settings saved!');
@@ -98,7 +101,7 @@ export default {
 </script>
 
 <style scoped>
-.settings-group .setting {
-    margin-bottom: 10px; /* Adjust the spacing to your liking */
+.settings-row {
+    margin-bottom: 20px; 
 }
 </style>

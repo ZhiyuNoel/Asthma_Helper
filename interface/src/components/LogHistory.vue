@@ -1,6 +1,6 @@
 <template>
   <div class="log-history">
-    <h2>Log History</h2>
+    <h2>Log History</h2>     <button @click="backToHome" class="back-home-btn">Back</button>
     <div class="log-columns">
       <div class="log-column">
         <h3>Reliever Log</h3>
@@ -15,7 +15,7 @@
         <h3>Preventer/Combination Log</h3>
         <ul>
           <li v-for="(log, index) in preventerCombinationLogs" :key="`preventer-combination-${index}`">
-            {{ new Date(log.time).toLocaleString() }} - {{ log.type }} - {{ log.timeOfDay }} - {{ log.action }}
+            {{ new Date(log.time).toLocaleString() }} - {{ log.timeOfDay }} - {{ log.type }} - {{ log.action }}
           </li>
         </ul>
       </div>
@@ -24,8 +24,10 @@
   </div>
 </template>
 
+
 <script>
 export default {
+  
   data() {
     return {
       logs: JSON.parse(localStorage.getItem('logHistory')) || []
@@ -41,35 +43,32 @@ export default {
   },
 
   methods: {
+    backToHome() {
+      this.$emit('change-view', 'default'); // Emit an event to request view change
+    },
     deleteLog(log, index) {
-      if (log.type === 'reliever' && log.action === 'clicked') {
-        // Decrement the remaining doses
-        const updatedDoses = this.getStoredRelieverDoses() - 1;
-        localStorage.setItem('relieverDosesRemaining', JSON.stringify(updatedDoses));
-        
+      console.log("Deleting log:", log);
+      if (window.confirm('Are you sure you want to delete this log?')) {
+        const index = this.logs.findIndex(l => l === log);
+
+        // Log before deletion
+        console.log("Before deletion:", this.logs.length);
+
+        if (log.type === 'reliever') {
+        // Update the logs array by removing the item at the specified index
+          this.logs.splice(index, 1);
+        }
+
+        // Save updated logs to localStorage
+        localStorage.setItem('logHistory', JSON.stringify(this.logs));
+
         // Emit an event to notify the parent component
-        this.$emit('log-deleted', 1); // Emitting 1 puff deleted
+        this.$emit('log-deleted');
+
+        // Log after deletion
+        console.log("After deletion:", this.logs.length);
       }
-
-      // Remove the specific log
-      this.logs.splice(index, 1);
-      localStorage.setItem('logHistory', JSON.stringify(this.logs));
     },
-
-    getStoredRelieverDoses() {
-      const storedValue = localStorage.getItem('relieverDosesRemaining');
-      return storedValue ? parseInt(JSON.parse(storedValue), 10) : 200; // Default to 200 if not set
-    },
-
-    getStoredSetting(key, defaultValue) {
-      const value = localStorage.getItem(key);
-      return value !== null ? JSON.parse(value) : defaultValue;
-    },
-
-    saveRelieverDoses() {
-      localStorage.setItem('relieverDosesRemaining', JSON.stringify(this.relieverDosesRemaining));
-    },
-
     clearLogHistory() {
       if (window.confirm("Are you sure you want to clear the logging history? This action cannot be undone.")) {
         localStorage.setItem('logHistory', JSON.stringify([])); 
@@ -92,6 +91,8 @@ export default {
   .log-column {
     flex: 1;
     padding: 0 20px;
+    max-height: 400px; /* Set a fixed maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
   }
 
 .clear-log-btn {
@@ -122,4 +123,15 @@ export default {
   .log-column button:hover {
     background-color: #cc0000;
   }
+
+  .back-home-btn{
+  /* Styling for your clear button */
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ffcccc; /* Example color */
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 </style>
