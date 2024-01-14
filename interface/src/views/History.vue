@@ -1,41 +1,191 @@
+<!--<template>-->
+<!--<el-main class="main">-->
+
+<!--  <div class="panel">-->
+<!--    <div><h2>Historical Air Quality Graph</h2></div>-->
+    <p>This section presents the historical levels of pollutants in the selected monitoring sites across London in the periods of weekly, monthly, and 3-monthly.
+      Datas are fetched from London Air Quality Network <a href="https://londonair.org.uk/LondonAir/Default.aspx">(LAQN)</a>.</p>
+
+
+<!--    <div class="container">-->
+<!--      <div class="left-container">  -->
+<!--        <div class="left-content">-->
+<!--          <h3>Select a monitoring site (region):</h3>  -->
+<!--            <select id="siteSelect" v-model="selectedSite">-->
+<!--              <option v-for="(name, code) in sites" :key="name" :value="code">-->
+<!--                {{ name }}-->
+<!--              </option>-->
+<!--            </select>-->
+<!--        </div>  -->
+<!--      </div>-->
+
+<!--      <div class="right-container">-->
+<!--        <div class="right-content">-->
+<!--          <h4>Suggested Pollutant Level</h4>-->
+<!--          <p>O3 &lt; 50 ugm-3</p>-->
+<!--          <p>NO2 &lt; 101 ugm-3</p>-->
+<!--          <p>SO2 &lt; 133 ugm-3</p>-->
+<!--          <p>PM2.5 &lt; 18 ugm-3</p>-->
+<!--          <p>PM10 &lt; 25 ugm-3</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+
+<!--    </div>-->
+
+
+
+<!--      <div>-->
+<!--        <h3>Past Week</h3> -->
+<!--      </div>-->
+<!--      <div style="margin-top: 50px;">-->
+<!--          <canvas id="weeklyChart" style="width: 50%; height: 100%;"></canvas>  -->
+<!--      </div>-->
+
+<!--      <div>-->
+<!--        <h3>Past Month</h3> -->
+<!--      </div>-->
+<!--      <div style="margin-top: 50px;">-->
+<!--          <canvas id="monthlyChart" style="width: 300px; height: 90px;"></canvas>  -->
+<!--      </div>-->
+
+<!--      <div>-->
+<!--        <h3>Past 3 Months</h3>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <canvas id="3monthlyChart" style="width: 300px; height: 90px;"></canvas>  -->
+<!--      </div>-->
+
+<!--  </el-main>-->
+<!--</template>-->
+
 <template>
-<el-main class="main">
-  <div class="panel">
-    <select id="siteSelect" v-model="selectedSite">
-      <option v-for="(name, code) in sites" :key="name" :value="code">
-        {{ name }}
-      </option>
-    </select>
-      <div>
-        <h3>Past Week</h3> 
-      </div>
-      <div style="margin-top: 50px;">
-          <canvas id="weeklyChart" style="width: 300px; height: 90px;"></canvas>  
-      </div>
+  <div class="common-layout">
+    <el-container>
+      <el-header><h2>Historical Air Quality Graph</h2></el-header>
+      <el-header>This section presents the historical levels of pollutants in the selected monitoring sites across London in the periods of weekly, monthly, and 3-monthly.
+        Datas are fetched from London Air Quality Network <a href="https://londonair.org.uk/LondonAir/Default.aspx">(LAQN)</a>.</el-header>
+      <el-container>
 
-      <div>
-        <h3>Past Month</h3> 
-      </div>
-      <div style="margin-top: 50px;">
-          <canvas id="monthlyChart" style="width: 300px; height: 90px;"></canvas>  
-      </div>
+        <el-container>
+          <el-footer>
+            <h3>Select a monitoring site (region):</h3>
+            <select id="siteSelect" v-model="selectedSite">
+              <option v-for="(name, code) in sites" :key="name" :value="code">
+                {{ name }}
+              </option>
+            </select>
+          </el-footer>
+          <el-main>
+                  <div>
+                    <h3>Past Week</h3>
+                  </div>
+                  <div style="margin-top: 50px;">
+                      <canvas id="weeklyChart" style="width: 50%; height: 100%;"></canvas>
+                  </div>
 
-      <div>
-        <h3>Past 3 Months</h3>
-      </div>
-      <div>
-        <canvas id="3monthlyChart" style="width: 300px; height: 90px;"></canvas>  
-      </div>
+                  <div>
+                    <h3>Past Month</h3>
+                  </div>
+                  <div style="margin-top: 50px;">
+                      <canvas id="monthlyChart" style="width: 300px; height: 90px;"></canvas>
+                  </div>
 
+                  <div>
+                    <h3>Past 3 Months</h3>
+                  </div>
+                  <div>
+                    <canvas id="3monthlyChart" style="width: 300px; height: 90px;"></canvas>
+                  </div>
+          </el-main>
+
+        </el-container>
+        <el-aside>
+          <h4>Suggested Pollutant Level</h4>
+          <el-table :data="[
+  {
+    factors: 'O3',
+    level: '&lt; 50 ugm-3',
+  },
+  {
+    factors: 'NO2',
+    level: ' &lt; 101 ugm-3',
+  },
+  {
+    factors: 'SO2',
+    level: '&lt; 133 ugm-3',
+  },
+  {
+    factors: 'PM2.5',
+    level: '&lt; 18 ugm-3',
+  },
+  {
+    factors: 'PM10',
+    level: '&lt; 25 ugm-3',
+  },
+]"  border stripe style="width: 100%">
+            <el-table-column prop="factors" label="Pollutant" width="120" />
+            <el-table-column prop="level" label="Level"  />
+          </el-table>
+
+          <!--          <div class="radius" :style='small'/>-->
+
+        </el-aside>
+      </el-container>
+    </el-container>
   </div>
-  </el-main>
 </template>
+
+
+
+<style scoped="scoped"
+  lang="scss">
+$width: 100%;
+$height: 100%;
+$background-color: #5251b1;
+$header-color: #fff;
+$header-height: 60px;
+
+.common-layout {
+    width: $width;
+    height: $height;
+    p {
+      font-family: 'Open Sans', sans-serif;
+      color: #333;
+      font-size: 15px;
+    }
+
+    //.el-container{
+    //  display: flex;
+    //  justify-content: space-between;
+    //}
+
+    .el-header{
+      width:100%;
+    }
+    .el-aside{
+      width:20%;
+    }
+    .el-main{
+      width:80%;
+    }
+
+    .el-footer{
+      width:100%;
+    }
+}
+
+
+</style>
+
 
 
 <script>
 import Chart from 'chart.js/auto';
 import { initCustomFormatter } from 'vue';
 import axios from 'axios';
+
 
 
 let data = () => {
@@ -635,71 +785,3 @@ export default {
 
 
 </script>
-
-<style scoped="scoped"
-  lang="scss">
-$width: 100%;
-$height: 100%;
-$background-color: #5251b1;
-$header-color: #fff;
-$header-height: 60px;
-
-.container {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    .el-aside {
-        .el-header {
-            line-height: $header-height;
-            background-color: $background-color;
-            color: $header-color;
-            text-align: center;
-        }
-        .el-container {
-            height: $height;
-            .el-main {
-                padding: 0;
-            }
-        }
-    }
-
-    .main {
-        width: $width;
-        height: $height;
-    }
-
-    .menu-button {
-        width: 14px;
-        cursor: pointer;
-    }
-
-    .userinfo-inner {
-        cursor: pointer;
-    }
-
-    .el-menu {
-        height: $height;
-    }
-
-    .header {
-        background-color: $background-color;
-        color: $header-color;
-        text-align: center;
-        line-height: $header-height;
-        padding: 0;
-
-        .header-title {
-            text-align: left;
-            span {
-                padding: 0 20px;
-            }
-        }
-    }
-
-    .system-name {
-        font-size: large;
-        font-weight: bold;
-    }
-}
-</style>
