@@ -111,7 +111,7 @@
     @change-view="handleChangeView"
   ></component>
 
-  <button @click="resetEverything">Reset Everything (Dev)</button>
+  <!-- <button @click="resetEverything">Reset Everything (Dev)</button> (for developer testing only)-->
 </div>
 
 <LogHistory
@@ -278,24 +278,27 @@ export default {
       this.eveningDose.time = this.getStoredSetting('eveningTime', '9:00pm');
     },
 
-    resetEverything() {
-      // Reset the local component data
-      this.selectedInhalerType = 'none';
-      this.puffsToday = 0;
-      this.puffsThisWeek = 0;
-      this.lastResetDay = new Date().getDay();
-      this.reliever = new DoseTracker(this.getStoredSetting('relieverDoses', 1));
-      this.preventer = new DoseTracker(this.getStoredSetting('preventerDoses', 1));
-
-      // Clear or reset localStorage items
-      localStorage.setItem('relieverDosesRemaining', JSON.stringify(1)); // Reset to default
-      localStorage.setItem('logHistory', JSON.stringify([])); // Clear log history
-      localStorage.setItem('puffsToday', JSON.stringify(0)); // Reset puffs today
-      localStorage.setItem('puffsThisWeek', JSON.stringify(0)); // Reset puffs this week
-
-      // Save the updated state
-      this.saveState();
+    updateDosesRemaining() {
+      this.reliever.dosesRemaining = parseInt(localStorage.getItem('relieverDosesRemaining'), 10);
+      this.preventer.dosesRemaining = parseInt(localStorage.getItem('preventerDosesRemaining'), 10);
     },
+
+    // This is for developer testing only to ensure that logging interface is working properly. 
+    // resetEverything() {
+    //   this.selectedInhalerType = 'none';
+    //   this.puffsToday = 0;
+    //   this.puffsThisWeek = 0;
+    //   this.lastResetDay = new Date().getDay();
+    //   this.reliever = new DoseTracker(this.getStoredSetting('relieverDoses', 1));
+    //   this.preventer = new DoseTracker(this.getStoredSetting('preventerDoses', 1));
+    //   localStorage.setItem('relieverDosesRemaining', JSON.stringify(1)); // Reset to default
+    //   localStorage.setItem('logHistory', JSON.stringify([])); // Clear log history
+    //   localStorage.setItem('puffsToday', JSON.stringify(0)); // Reset puffs today
+    //   localStorage.setItem('puffsThisWeek', JSON.stringify(0)); // Reset puffs this week
+
+    //   // Save the updated state
+    //   this.saveState();
+    // },
 
     getStoredSetting(key, defaultValue) {
       const value = localStorage.getItem(key);
@@ -343,6 +346,7 @@ export default {
         this.eveningDose = state.eveningDose;
       }
       this.updateMorningAndEveningDoses();
+      this.updateDosesRemaining();
     },
 
     localStorageChanged(event) {
@@ -475,6 +479,7 @@ export default {
     },
     'localStorageChanged'() {
       this.loadState();
+      this.updateDosesRemaining();
     }
   },
 

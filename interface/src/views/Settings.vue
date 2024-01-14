@@ -84,6 +84,8 @@ export default {
       localStorage.setItem('preventerDoses', this.preventerDoses.toString());
       localStorage.setItem('morningNumberOfPuffs', this.morningNumberOfPuffs.toString());
       localStorage.setItem('eveningNumberOfPuffs', this.eveningNumberOfPuffs.toString());
+      localStorage.setItem('relieverDosesRemaining', this.relieverDoses.toString());
+      localStorage.setItem('preventerDosesRemaining', this.preventerDoses.toString());
       localStorage.setItem('morningTime', this.morningTime.toString());
       localStorage.setItem('eveningTime', this.eveningTime.toString());
       localStorage.setItem('relieverLowDoseThreshold', this.relieverLowDoseThreshold.toString());
