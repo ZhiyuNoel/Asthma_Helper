@@ -1,65 +1,3 @@
-<!--<template>-->
-<!--<el-main class="main">-->
-
-<!--  <div class="panel">-->
-<!--    <div><h2>Historical Air Quality Graph</h2></div>-->
-    <p>This section presents the historical levels of pollutants in the selected monitoring sites across London in the periods of weekly, monthly, and 3-monthly.
-      Datas are fetched from London Air Quality Network <a href="https://londonair.org.uk/LondonAir/Default.aspx">(LAQN)</a>.</p>
-
-
-<!--    <div class="container">-->
-<!--      <div class="left-container">  -->
-<!--        <div class="left-content">-->
-<!--          <h3>Select a monitoring site (region):</h3>  -->
-<!--            <select id="siteSelect" v-model="selectedSite">-->
-<!--              <option v-for="(name, code) in sites" :key="name" :value="code">-->
-<!--                {{ name }}-->
-<!--              </option>-->
-<!--            </select>-->
-<!--        </div>  -->
-<!--      </div>-->
-
-<!--      <div class="right-container">-->
-<!--        <div class="right-content">-->
-<!--          <h4>Suggested Pollutant Level</h4>-->
-<!--          <p>O3 &lt; 50 ugm-3</p>-->
-<!--          <p>NO2 &lt; 101 ugm-3</p>-->
-<!--          <p>SO2 &lt; 133 ugm-3</p>-->
-<!--          <p>PM2.5 &lt; 18 ugm-3</p>-->
-<!--          <p>PM10 &lt; 25 ugm-3</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-
-<!--    </div>-->
-
-
-
-<!--      <div>-->
-<!--        <h3>Past Week</h3> -->
-<!--      </div>-->
-<!--      <div style="margin-top: 50px;">-->
-<!--          <canvas id="weeklyChart" style="width: 50%; height: 100%;"></canvas>  -->
-<!--      </div>-->
-
-<!--      <div>-->
-<!--        <h3>Past Month</h3> -->
-<!--      </div>-->
-<!--      <div style="margin-top: 50px;">-->
-<!--          <canvas id="monthlyChart" style="width: 300px; height: 90px;"></canvas>  -->
-<!--      </div>-->
-
-<!--      <div>-->
-<!--        <h3>Past 3 Months</h3>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <canvas id="3monthlyChart" style="width: 300px; height: 90px;"></canvas>  -->
-<!--      </div>-->
-
-<!--  </el-main>-->
-<!--</template>-->
-
 <template>
   <div class="common-layout">
     <el-container>
@@ -67,39 +5,21 @@
       <el-header>This section presents the historical levels of pollutants in the selected monitoring sites across London in the periods of weekly, monthly, and 3-monthly.
         Datas are fetched from London Air Quality Network <a href="https://londonair.org.uk/LondonAir/Default.aspx">(LAQN)</a>.</el-header>
       <el-container>
-
         <el-container>
-          <el-footer>
-            <h3>Select a monitoring site (region):</h3>
-            <select id="siteSelect" v-model="selectedSite">
-              <option v-for="(name, code) in sites" :key="name" :value="code">
-                {{ name }}
-              </option>
-            </select>
-          </el-footer>
           <el-main>
-                  <div>
-                    <h3>Past Week</h3>
-                  </div>
-                  <div style="margin-top: 50px;">
-                      <canvas id="weeklyChart" style="width: 50%; height: 100%;"></canvas>
-                  </div>
-
-                  <div>
-                    <h3>Past Month</h3>
-                  </div>
-                  <div style="margin-top: 50px;">
-                      <canvas id="monthlyChart" style="width: 300px; height: 90px;"></canvas>
-                  </div>
-
-                  <div>
-                    <h3>Past 3 Months</h3>
-                  </div>
-                  <div>
-                    <canvas id="3monthlyChart" style="width: 300px; height: 90px;"></canvas>
-                  </div>
+            <h3>Select a monitoring site (region):</h3>
+              <select id="siteSelect" v-model="selectedSite">
+                <option v-for="(name, code) in sites" :key="name" :value="code">
+                  {{ name }}
+                </option>
+              </select>
+            <div><h3>Past Week</h3></div>
+            <div style="margin-top: 50px;"><canvas id="weeklyChart" style="width: 50%; height: 100%;"></canvas></div>
+            <div><h3>Past Month</h3></div>
+            <div style="margin-top: 50px;"><canvas id="monthlyChart" style="width: 300px; height: 90px;"></canvas></div>
+            <div><h3>Past 3 Months</h3></div>
+            <div><canvas id="3monthlyChart" style="width: 300px; height: 90px;"></canvas></div>
           </el-main>
-
         </el-container>
         <el-aside>
           <h4>Suggested Pollutant Level</h4>
@@ -203,9 +123,9 @@ export default {
   data: data,
   name: "History",
   mounted() {
-    this.fetchAndInitWeeklyChart();
-    this.fetchAndInitMonthlyChart();
-    this.fetchAndInit3MonthlyChart();
+    this.initWeeklyChart();
+    this.initMonthlyChart();
+    this.init3MonthlyChart();
   },
 
   methods: {
@@ -214,96 +134,40 @@ export default {
       this.$router.push({ name: 'history' });
     },
 
-    fetchAndInitWeeklyChart() {
-      this.currentDate = this.getCurrentDate();
-      var pastDate = this.getPastDate(7);
-      var SO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=SO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var O3_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=O3/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var NO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=NO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var PM10_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM10/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var PM25_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM25/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-
-      Promise.all([
-        axios.get(SO2_link).catch(err => ({ error: true, data: null })),
-        axios.get(NO2_link).catch(err => ({ error: true, data: null })),
-        axios.get(O3_link).catch(err => ({ error: true, data: null })),
-        axios.get(PM10_link).catch(err => ({ error: true, data: null })),
-        axios.get(PM25_link).catch(err => ({ error: true, data: null }))
-      ]).then(responses => {
-
-        var datasets = [];
-        var labels = [];
-        responses.forEach(response => {
-          if (response && !response.error && response.data && response.data.RawAQData && response.data.RawAQData.Data) {
-            const currentLabels = response.data.RawAQData.Data.map(item => item["@MeasurementDateGMT"].split(" ")[0]);
-            if (currentLabels.length > labels.length) {
-              labels = currentLabels;
-            }
-          }
-        });
-
-        if (responses[0] && !responses[0].error) {
-          datasets.push({
-            label: 'SO2',
-            data: responses[0].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[1] && !responses[1].error) {
-          datasets.push({
-            label: 'NO2',
-            data: responses[1].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(200, 200, 0, 0.2)',
-            borderColor: 'rgba(200, 200, 0, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[2] && !responses[2].error) {
-          datasets.push({
-            label: 'O3',
-            data: responses[2].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(0, 0, 200, 0.2)',
-            borderColor: 'rgba(0, 0, 200, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[3] && !responses[3].error) {
-          datasets.push({
-            label: 'PM10',
-            data: responses[3].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(0, 200, 0, 0.2)',
-            borderColor: 'rgba(0, 200, 0, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[4] && !responses[4].error) {
-          datasets.push({
-            label: 'PM25',
-            data: responses[4].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(128, 0, 132, 0.2)',
-            borderColor: 'rgba(128, 0, 132, 1)',
-            borderWidth: 1
-          });
-        }
-        
-        
-        const ctx = document.getElementById('weeklyChart').getContext('2d');
-        this.weeklyChart = new Chart(ctx, {type: 'line',
-          data: {labels: labels,datasets: datasets},
-          options: {
+    initWeeklyChart() {
+      const ctx = document.getElementById('weeklyChart').getContext('2d');
+      this.weeklyChart = new Chart(ctx, {type: 'line',
+        data: {labels: null,datasets: null},
+        options: {
             plugins: {title: {display: true,text: `Weekly Chart ${this.selectedSite}`}},
             scales: {y: {beginAtZero: true}}
-          }
-        });
-
-    }).catch(error => {
-        console.error("Error in Promise.all: ", error);
+        }
       });
-     
+    },
+
+    initMonthlyChart() {
+      const ctx = document.getElementById('monthlyChart').getContext('2d');
+      this.monthlyChart = new Chart(ctx, {
+        type: 'line',
+        data: {labels: null,datasets: null},
+        options: {
+          plugins: {title: {display: true,text: `Monthly Chart ${this.selectedSite}`}},
+          scales: {y: {beginAtZero: true}}
+        }
+      });
     },
     
+    init3MonthlyChart() {
+      const ctx = document.getElementById('3monthlyChart').getContext('2d');
+      this.tmonthlyChart = new Chart(ctx, {
+        type: 'line',
+        data: {labels: null, datasets: null},
+        options: {
+          plugins: {title: {display: true, text: `3 Monthly Chart ${this.selectedSite}`}},
+          scales: {y: {beginAtZero: true}}
+        } 
+      }); 
+    }, 
 
     updateWeeklyChart() {
       this.currentDate = this.getCurrentDate();
@@ -389,101 +253,7 @@ export default {
       });
      
     },
-
-   
-
-    fetchAndInitMonthlyChart() {
-        this.currentDate = this.getCurrentDate();
-        var pastDate = this.getPastDate(30);
-        var SO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=SO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var O3_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=O3/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var NO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=NO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var PM10_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM10/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-        var PM25_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM25/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-
-        Promise.all([
-          axios.get(SO2_link).catch(err => ({ error: true, data: null })),
-          axios.get(NO2_link).catch(err => ({ error: true, data: null })),
-          axios.get(O3_link).catch(err => ({ error: true, data: null })),
-          axios.get(PM10_link).catch(err => ({ error: true, data: null })),
-          axios.get(PM25_link).catch(err => ({ error: true, data: null }))
-        ]).then(responses => {
-          var datasets = [];
-          var labels = [];
-          responses.forEach(response => {
-            if (response && !response.error && response.data && response.data.RawAQData && response.data.RawAQData.Data) {
-              const currentLabels = response.data.RawAQData.Data.map(item => item["@MeasurementDateGMT"].split(" ")[0]);
-              if (currentLabels.length > labels.length) {
-                labels = currentLabels;
-              }
-            }
-          });
-
-          if (responses[0] && !responses[0].error) {
-            datasets.push({
-              label: 'SO2',
-              data: responses[0].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[1] && !responses[1].error) {
-            datasets.push({
-              label: 'NO2',
-              data: responses[1].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(200, 200, 0, 0.2)',
-              borderColor: 'rgba(200, 200, 0, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[2] && !responses[2].error) {
-            datasets.push({
-              label: 'O3',
-              data: responses[2].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(0, 0, 200, 0.2)',
-              borderColor: 'rgba(0, 0, 200, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[3] && !responses[3].error) {
-            datasets.push({
-              label: 'PM10',
-              data: responses[3].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(0, 200, 0, 0.2)',
-              borderColor: 'rgba(0, 200, 0, 1)',
-              borderWidth: 1
-            });
-          }
-          if (responses[4] && !responses[4].error) {
-            datasets.push({
-              label: 'PM25',
-              data: responses[4].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-              backgroundColor: 'rgba(128, 0, 132, 0.2)',
-              borderColor: 'rgba(128, 0, 132, 1)',
-              borderWidth: 1
-            });
-          }
-
-          const ctx = document.getElementById('monthlyChart').getContext('2d');
-
-          this.monthlyChart = new Chart(ctx, {
-            type: 'line',
-            data: {labels: labels,datasets: datasets},
-            options: {
-              plugins: {
-                  title: {display: true,text: `Monthly Chart ${this.selectedSite}`}
-              },
-              scales: {y: {beginAtZero: true}}
-            }
-          });
-
-        }).catch(error => {
-          console.error("Error in Promise.all: ", error);
-        });
-       
-      },
-    
+  
       updateMonthlyChart() {
         this.currentDate = this.getCurrentDate();
         var pastDate = this.getPastDate(30);
@@ -566,95 +336,6 @@ export default {
         });
        
       },
-
-
-    fetchAndInit3MonthlyChart() {
-      this.currentDate = this.getCurrentDate();
-      var pastDate = this.getPastDate(90);
-      var SO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=SO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var O3_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=O3/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var NO2_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=NO2/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var PM10_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM10/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-      var PM25_link= `https://api.erg.ic.ac.uk/AirQuality/Data/SiteSpecies/SiteCode=${this.selectedSite}/SpeciesCode=PM25/StartDate=${pastDate}/EndDate=${this.currentDate}/Period=daily/Units=hour/Step=1/Json`;
-
-      Promise.all([
-        axios.get(SO2_link).catch(err => ({ error: true, data: null })),
-        axios.get(NO2_link).catch(err => ({ error: true, data: null })),
-        axios.get(O3_link).catch(err => ({ error: true, data: null })),
-        axios.get(PM10_link).catch(err => ({ error: true, data: null })),
-        axios.get(PM25_link).catch(err => ({ error: true, data: null }))
-      ]).then(responses => {
-        var datasets = [];
-        var labels = [];
-        responses.forEach(response => {
-          if (response && !response.error && response.data && response.data.RawAQData && response.data.RawAQData.Data) {
-            const currentLabels = response.data.RawAQData.Data.map(item => item["@MeasurementDateGMT"].split(" ")[0]);
-            if (currentLabels.length > labels.length) {
-              labels = currentLabels;
-            }
-          }
-        });
-
-        if (responses[0] && !responses[0].error) {
-          datasets.push({
-            label: 'SO2',
-            data: responses[0].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[1] && !responses[1].error) {
-          datasets.push({
-            label: 'NO2',
-            data: responses[1].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(200, 200, 0, 0.2)',
-            borderColor: 'rgba(200, 200, 0, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[2] && !responses[2].error) {
-          datasets.push({
-            label: 'O3',
-            data: responses[2].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(0, 0, 200, 0.2)',
-            borderColor: 'rgba(0, 0, 200, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[3] && !responses[3].error) {
-          datasets.push({
-            label: 'PM10',
-            data: responses[3].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(0, 200, 0, 0.2)',
-            borderColor: 'rgba(0, 200, 0, 1)',
-            borderWidth: 1
-          });
-        }
-        if (responses[4] && !responses[4].error) {
-          datasets.push({
-            label: 'PM25',
-            data: responses[4].data.RawAQData.Data.map(item => parseFloat(item["@Value"])),
-            backgroundColor: 'rgba(128, 0, 132, 0.2)',
-            borderColor: 'rgba(128, 0, 132, 1)',
-            borderWidth: 1
-          });
-        }
-        
-
-          const ctx = document.getElementById('3monthlyChart').getContext('2d');
-          this.tmonthlyChart = new Chart(ctx, {
-            type: 'line',
-            data: {labels: labels, datasets: datasets},
-            options: {
-              plugins: {title: {display: true, text: `3 Monthly Chart ${this.selectedSite}`}},
-              scales: {y: {beginAtZero: true}}
-            } 
-          }); 
-
-        }).catch(error => {console.error("Error in Promise.all: ", error);});
-        
-      },  
 
     update3MonthlyChart() {
       this.currentDate = this.getCurrentDate();
